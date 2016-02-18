@@ -12,11 +12,13 @@
 
 using namespace MongoDBCollections;
 
-class MongoDriver : public DBDriver
+class MongoDriver
+        : public DBDriver
 {
 public:
     MongoDriver() {checks(); }
     std::string getDriverName() override { return "Mongoc"; }
+    std::string getSchedules() override;
 
 private:
     void checks();

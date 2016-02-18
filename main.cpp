@@ -1,6 +1,6 @@
 #include <iostream>
 #include <memory>
-#include "DBDriver.h"
+#include "Service.h"
 #include "MongoDriver.h"
 
 
@@ -14,6 +14,8 @@ void hello()
 
 int main( const int, const char** )
 {
+    auto s = std::make_shared<FUNSService>(db);
     hello();
+    s->start();
     return EXIT_SUCCESS;
 }
