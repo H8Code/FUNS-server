@@ -1,43 +1,41 @@
 #include <iostream>
-#include <cpprest/uri.h>
-#include "FunsServer.h"
+#include <restbed>
+#include <memory>
+#include <cstdlib>
 
-std::unique_ptr<FunsServer> g_server;
 
-void on_initialize(const string_t& address)
+using namespace std;
+using namespace restbed;
+
+void post_method_handler( const shared_ptr< Session > session )
 {
-    // Build our listener's URI from the configured address and the hard-coded path "blackjack/dealer"
+    const auto request = session->get_request( );
 
-    uri_builder uri(address);
-    uri.append_path(U("api"));
+    int content_length = 0;
+    request->get_header( "Content-Length", content_length );
 
-    auto addr = uri.to_uri().to_string();
-    g_server = std::unique_ptr<FunsServer>(new FunsServer(addr));
-    g_server->open().wait();
-
-    ucout << utility::string_t(U("Listening for requests at: ")) << addr << std::endl;
+    session->fetch( content_length, [ ]( const shared_ptr< Session > session, const Bytes & body )
+    {
+        fprintf( stdout, "%.*s\n", ( int ) body.size( ), body.data( ) );
+        session->close( OK, "Hello, World!", { { "Content-Length", "13" } } );
+    } );
 }
 
-void on_shutdown()
-{
-    g_server->close().wait();
-}
-
-int main()
+int main( const int, const char** )
 {
     std::cout << "FUNS-server\nVersion " << 1 << "." << 0 << std::endl;
 
-    utility::string_t port = U("34666");
+    auto resource = make_shared< Resource >( );
+    resource->set_path( "/resource" );
+    resource->set_method_handler( "POST", post_method_handler );
 
-    utility::string_t address = U("http://localhost:");
-    address.append(port);
+    auto settings = make_shared< Settings >( );
+    settings->set_port( 34666 );
+    settings->set_default_header( "Connection", "close" );
 
-    on_initialize(address);
-    std::string line;
-    std::cout << "Press ENTER to exit." << std::endl;
-    std::getline(std::cin, line);
-    on_shutdown();
+    Service service;
+    service.publish( resource );
+    service.start( settings );
 
-    return 0;
+    return EXIT_SUCCESS;
 }
-
