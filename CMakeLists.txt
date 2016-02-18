@@ -9,8 +9,10 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 include_directories("../restbed/distribution/include")
 link_directories("../restbed/distribution/library")
 add_library(restbed SHARED IMPORTED)
+add_library(mongoc SHARED IMPORTED)
 
 aux_source_directory(. SRC_LIST)
 
 add_executable(funs-server ${SRC_LIST})
 target_link_libraries(funs-server "restbed.so")
+target_link_libraries(funs-server "mongoc-1.0.so")
