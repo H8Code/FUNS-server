@@ -8,8 +8,8 @@
 class DBDriver
 {
 public:
-    virtual std::string getDriverName() = 0;
-    virtual std::string getSchedules() = 0;
+    virtual std::string get_driver_name() = 0;
+    virtual std::string get_schedules() = 0;
 };
 
 #endif //DBDRIVER_H

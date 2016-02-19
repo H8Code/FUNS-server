@@ -8,17 +8,17 @@
 #include <mongocxx/instance.hpp>
 
 #include "DBDriver.h"
-#include "MongoDBCollections.h"
+#include "MongoConfig.h"
 
-using namespace MongoDBCollections;
+using namespace mongo_config;
 
 class MongoDriver
         : public DBDriver
 {
 public:
     MongoDriver() {checks(); }
-    std::string getDriverName() override { return "Mongoc"; }
-    std::string getSchedules() override;
+    std::string get_driver_name() override { return "Mongoc"; }
+    std::string get_schedules() override;
 
 private:
     void checks();

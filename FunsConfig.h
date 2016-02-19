@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-namespace FUNS {
+namespace funs_config {
     constexpr auto port = 34666;
     constexpr auto bind_addres = "127.0.0.1";
     constexpr auto worker_limit = 4;

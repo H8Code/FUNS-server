@@ -3,7 +3,7 @@
 #include <thread>
 #include <sstream>
 
-std::__cxx11::string MongoDriver::getSchedules()
+std::__cxx11::string MongoDriver::get_schedules()
 {
     bsoncxx::builder::stream::document doc;
     std::stringstream ss;
@@ -16,5 +16,5 @@ std::__cxx11::string MongoDriver::getSchedules()
 void MongoDriver::checks()
 {
     std::cout << "Mongo check" << std::endl;
-    std::cout << bsoncxx::to_json(*db[MongoDBCollections::c_test].find({}).begin());
+    std::cout << bsoncxx::to_json(*db[mongo_config::c_test].find({}).begin());
 }

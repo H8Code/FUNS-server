@@ -9,23 +9,23 @@
 using namespace restbed;
 using namespace std;
 
-class RSchedules
+class APISchedules
         : public Resource
 {
 public:
-    RSchedules() = delete;
-    RSchedules(shared_ptr<DBDriver> db)
+    APISchedules() = delete;
+    APISchedules(shared_ptr<DBDriver> db)
         : Resource(),
           db{db}
     {
         set_path("/api/schedules");
-        set_method_handler("GET", std::bind(&RSchedules::get_handler, this, std::placeholders::_1));
+        set_method_handler("GET", std::bind(&APISchedules::get_handler, this, std::placeholders::_1));
     }
 private:
     shared_ptr<DBDriver> db;
     void get_handler(const shared_ptr<Session> session)
     {
-        auto data = db->getSchedules();
+        auto data = db->get_schedules();
         session->close( OK, data);\
     }
 };

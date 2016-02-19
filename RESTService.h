@@ -3,18 +3,18 @@
 
 #include <memory>
 #include <restbed>
-#include "Config.h"
+#include "FunsConfig.h"
 #include "DBDriver.h"
-#include "resources/Schedules.h"
+#include "api/Schedules.h"
 
 using namespace restbed;
 using namespace std;
 
-class FUNSService
+class RESTService
 {
 public:
-    FUNSService() = delete;
-    FUNSService(shared_ptr<DBDriver> db);
+    RESTService() = delete;
+    RESTService(shared_ptr<DBDriver> db);
 
     void start();
 
