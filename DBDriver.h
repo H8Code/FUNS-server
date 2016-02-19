@@ -5,8 +5,7 @@
 /*
  * Database driver interface
  */
-class DBDriver
-{
+class DBDriver {
 public:
     virtual std::string get_driver_name() = 0;
     virtual std::string get_schedules() = 0;
