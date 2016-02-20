@@ -6,6 +6,7 @@
 #include "FunsConfig.h"
 #include "DBDriver.h"
 #include "api/Schedules.h"
+#include "api/SchedulesID.h"
 
 using namespace restbed;
 using namespace std;

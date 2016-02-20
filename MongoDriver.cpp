@@ -1,7 +1,7 @@
 #include "MongoDriver.h"
 
-#include <thread>
-#include <sstream>
+using bsoncxx::builder::stream::document;
+using bsoncxx::builder::stream::finalize;
 
 std::__cxx11::string MongoDriver::get_schedules()
 {
@@ -14,8 +14,52 @@ std::__cxx11::string MongoDriver::get_schedules()
 	return result;
 }
 
+std::__cxx11::string MongoDriver::get_schedule_by_id(std::string id)
+{
+	auto cursor = db[mongo_config::c_schedules].find(document{} << "_id" << bsoncxx::oid(id) << finalize);
+	return bsoncxx::to_json(*cursor.begin());
+}
+
+
 void MongoDriver::checks()
 {
 	std::cout << "Mongo check" << std::endl;
-	std::cout << bsoncxx::to_json(*db[mongo_config::c_test].find({}).begin());
+	//std::cout << bsoncxx::to_json(*db[mongo_config::c_users].find({}).begin());
+	//template_table();
+}
+
+void MongoDriver::template_table()
+{
+	auto c_schedules = db[mongo_config::c_schedules];
+	//c_schedules.drop();
+	
+	auto c_users = db[mongo_config::c_users];
+	//c_users.drop();
+	
+	std::string data, tmp;
+	std::fstream file;
+	file.open("kek.json");
+	while (!file.eof()) {
+		getline(file, tmp);
+		data += tmp;
+		data += '\n';
+	}
+	file.close();
+	auto bson = bsoncxx::from_json(data);
+	std::cout << bsoncxx::to_json(bson.view()) << std::endl;
+	//c_schedules.insert_one();
+	
+	file.open("keku.json");
+	data.clear();
+	while (!file.eof()) {
+		getline(file, tmp);
+		data += tmp;
+		data += '\n';
+	}
+	file.close();
+	bson = bsoncxx::from_json(data);
+	
+	//c_users.insert_one(bson.view());	
+	
+	std::cout << "inserted one" << std::endl;
 }

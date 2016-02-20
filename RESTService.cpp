@@ -11,6 +11,7 @@ RESTService::RESTService(shared_ptr<DBDriver> db):
     settings->set_worker_limit(funs_config::worker_limit);
 
     service->publish(make_shared<APISchedules>(db));
+    service->publish(make_shared<APISchedulesID>(db));
 }
 
 void RESTService::start()
