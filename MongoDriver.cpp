@@ -5,7 +5,11 @@ using bsoncxx::builder::stream::finalize;
 
 std::__cxx11::string MongoDriver::get_schedules()
 {
-	auto cursor = db[mongo_config::c_schedules].find({});
+	mongocxx::options::find opts;
+	bsoncxx::builder::stream::document order_builder;
+	order_builder << "odd" << 0 << "even" << 0 << "unusual" << 0 << "subjects" << 0;
+	opts.projection(order_builder.view());
+	auto cursor = db[mongo_config::c_schedules].find({}, opts);
 	std::string result{};
 	result += "[";
 	for (auto &&doc : cursor)
