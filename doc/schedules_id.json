@@ -1,0 +1,169 @@
+{
+"name" : "fucking_first_schedue",
+"institution" : "OMSU",
+"group" : "sib-401-o",
+"period_start" : "2016-02-01",
+"period_end" : "2016-02-30",
+"creator" : "mom",
+"subjects" : [
+	{
+		"id" : 0,
+		"name" : "Computational Math"
+	},
+	{
+		"id" : 1,
+		"name" : "Algebra"
+	},
+	{
+		"id" : 2,
+		"name" : "English"
+	}
+],
+"odd" : [
+	{
+		"day_of_week" : 0,
+		"subjects" : [
+			{
+				"subject_id" : 0,
+				"main_field" : "Main Text",
+				"sub_field_0" : "Sub Text 0",
+				"sub_filed_1" : "Sub Text 1",
+				"sub_filed_2" : "Sub Text 2",
+				"sub_filed_3" : "Sub Text 3",
+				"start_time_hour" : 9,
+				"start_time_minute" : 45,
+				"end_time_hour" : 10,
+				"end_time_minute" : 25,
+				"color" : "#8000FF"
+			},
+			{
+				"subject_id" : 0,
+				"main_field" : "Main Text",
+				"sub_field_0" : "Sub Text 0",
+				"sub_filed_1" : "Sub Text 1",
+				"sub_filed_2" : "Sub Text 2",
+				"sub_filed_3" : "Sub Text 3",
+				"start_time_hour" : 10,
+				"start_time_minute" : 35,
+				"end_time_hour" : 11,
+				"end_time_minute" : 20,
+				"color" : "#0000FF"
+			}
+		]
+	},
+		{
+			"day_of_week" : 1,
+			"subjects" : [
+				{
+				"subject_id" : 1,
+				"main_field" : "Main Text",
+				"sub_field_0" : "Sub Text 0",
+				"sub_filed_1" : "Sub Text 1",
+				"sub_filed_2" : "Sub Text 2",
+				"sub_filed_3" : "Sub Text 3",
+				"start_time_hour" : 9,
+				"start_time_minute" : 45,
+				"end_time_hour" : 10,
+				"end_time_minute" : 25,
+				"color" : "#800FFF"
+			},
+			{
+				"subject_id" : 2,
+				"main_field" : "Main Text",
+				"sub_field_0" : "Sub Text 0",
+				"sub_filed_1" : "Sub Text 1",
+				"sub_filed_2" : "Sub Text 2",
+				"sub_filed_3" : "Sub Text 3",
+				"start_time_hour" : 10,
+				"start_time_minute" : 35,
+				"end_time_hour" : 11,
+				"end_time_minute" : 20,
+				"color" : "#80F0FF"
+			}
+		]
+	}
+],
+"even" : [
+	{
+		"day_of_week" : 0,
+		"subjects" : [
+			{
+				"subject_id" : 0,
+				"main_field" : "Main Text",
+				"sub_field_0" : "Sub Text 0",
+				"sub_filed_1" : "Sub Text 1",
+				"sub_filed_2" : "Sub Text 2",
+				"sub_filed_3" : "Sub Text 3",
+				"start_time_hour" : 9,
+				"start_time_minute" : 45,
+				"end_time_hour" : 10,
+				"end_time_minute" : 25,
+				"color" : "#8000FF"
+			},
+			{
+				"subject_id" : 0,
+				"main_field" : "Main Text",
+				"sub_field_0" : "Sub Text 0",
+				"sub_filed_1" : "Sub Text 1",
+				"sub_filed_2" : "Sub Text 2",
+				"sub_filed_3" : "Sub Text 3",
+				"start_time_hour" : 10,
+				"start_time_minute" : 35,
+				"end_time_hour" : 11,
+				"end_time_minute" : 20,
+				"color" : "#0000FF"
+			}
+		]
+	},
+		{
+			"day_of_week" : 1,
+			"subjects" : [
+				{
+				"subject_id" : 1,
+				"main_field" : "Main Text",
+				"sub_field_0" : "Sub Text 0",
+				"sub_filed_1" : "Sub Text 1",
+				"sub_filed_2" : "Sub Text 2",
+				"sub_filed_3" : "Sub Text 3",
+				"start_time_hour" : 9,
+				"start_time_minute" : 45,
+				"end_time_hour" : 10,
+				"end_time_minute" : 25,
+				"color" : "#800FFF"
+			},
+			{
+				"subject_id" : 2,
+				"main_field" : "Main Text",
+				"sub_field_0" : "Sub Text 0",
+				"sub_filed_1" : "Sub Text 1",
+				"sub_filed_2" : "Sub Text 2",
+				"sub_filed_3" : "Sub Text 3",
+				"start_time_hour" : 10,
+				"start_time_minute" : 35,
+				"end_time_hour" : 11,
+				"end_time_minute" : 20,
+				"color" : "#80F0FF"
+			}
+		]
+	}
+],
+"unusual" : [
+	{
+		"subject_id" : 2,
+		"start_time_hour" : 10,
+		"start_time_minute" : 35,
+		"end_time_hour" : 11,
+		"end_time_minute" : 20,
+		"date" : "standart_date_type",
+		"period_start" : "standart_date_type",
+		"period_end" : "standart_date_type",
+		"day_of_week" : 1,
+		"main_field" : "Main Text",
+		"sub_field_0" : "Sub Text 0",
+		"sub_filed_1" : "Sub Text 1",
+		"sub_filed_2" : "Sub Text 2",
+		"sub_filed_3" : "Sub Text 3",
+		"color" : "#0000FF"
+	}
+	]
+}

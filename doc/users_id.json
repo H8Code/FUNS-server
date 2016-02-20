@@ -1,0 +1,7 @@
+{
+    "_id" : "mom",
+    "name" : "Your Mom",
+    "info" : "мамаша твоя",
+    "password_hash" : "DEADBEEF666",
+    "salt" : "AAABBBCCCDDD"
+}
