@@ -1,7 +1,7 @@
 #include "RESTService.h"
 
-RESTService::RESTService(shared_ptr<DBDriver> db):
-    db{db},
+RESTService::RESTService(shared_ptr<DBDriver> _db):
+    db{_db},
     settings{make_shared<Settings>()},
     service{make_shared<Service>()}
 {
