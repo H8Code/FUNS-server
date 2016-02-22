@@ -27,7 +27,6 @@ public:
 
 private:
     void checks();
-    void template_table();
 
     mongocxx::instance inst{};
     mongocxx::client mongo_client{mongocxx::uri{}};
