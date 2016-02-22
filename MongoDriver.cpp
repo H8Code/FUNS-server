@@ -6,9 +6,9 @@ using bsoncxx::builder::stream::finalize;
 std::__cxx11::string MongoDriver::get_schedules()
 {
 	mongocxx::options::find opts;
-	bsoncxx::builder::stream::document order_builder;
-	order_builder << "odd" << 0 << "even" << 0 << "unusual" << 0 << "subjects" << 0;
-	opts.projection(order_builder.view());
+	bsoncxx::builder::stream::document exclude_fields;
+	exclude_fields << "odd" << 0 << "even" << 0 << "unusual" << 0 << "subjects" << 0;
+	opts.projection(exclude_fields.view());
 	auto cursor = db[mongo_config::c_schedules].find({}, opts);
 	std::string result{};
 	result += "[";
@@ -20,7 +20,11 @@ std::__cxx11::string MongoDriver::get_schedules()
 
 std::__cxx11::string MongoDriver::get_schedule_by_id(std::string id)
 {
-	auto cursor = db[mongo_config::c_schedules].find(document{} << "_id" << bsoncxx::oid(id) << finalize);
+	mongocxx::options::find opts;
+	bsoncxx::builder::stream::document exclude_fields;
+	exclude_fields << "odd" << 0 << "even" << 0 << "unusual" << 0 << "subjects" << 0;
+	opts.projection(exclude_fields.view());
+	auto cursor = db[mongo_config::c_schedules].find(document{} << "_id" << bsoncxx::oid(id) << finalize, opts);
 	return bsoncxx::to_json(*cursor.begin());
 }
 
