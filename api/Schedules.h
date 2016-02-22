@@ -13,7 +13,7 @@ class APISchedules
 : public Resource {
 public:
     APISchedules() = delete;
-    APISchedules(shared_ptr<DBDriver> db)
+    explicit APISchedules(shared_ptr<DBDriver> db)
     : Resource(),
     db{db}
     {

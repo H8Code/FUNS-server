@@ -13,7 +13,7 @@ class APISchedulesID
 : public Resource {
 public:
     APISchedulesID() = delete;
-    APISchedulesID(shared_ptr<DBDriver> db)
+    explicit APISchedulesID(shared_ptr<DBDriver> db)
     : Resource(),
     db{db}
     {
