@@ -3,13 +3,30 @@
 using bsoncxx::builder::stream::document;
 using bsoncxx::builder::stream::finalize;
 
-std::string MongoDriver::get_schedules()
+/*
+ * Will create opts variable, used for excluding fields from find requests
+ */
+#define __excluder(list...) \
+	mongocxx::options::find opts; \
+	bsoncxx::builder::stream::document exclude_fields; \
+	for (auto &x: list) exclude_fields << x << 0; \
+	opts.projection(exclude_fields.view());
+
+mongocxx::options::find excluder(std::initializer_list<std::string> list)
 {
 	mongocxx::options::find opts;
 	bsoncxx::builder::stream::document exclude_fields;
-	exclude_fields << "odd" << 0 << "even" << 0 << "unusual" << 0 << "subjects" << 0;
+	for (auto &x : list) exclude_fields << x << 0;
 	opts.projection(exclude_fields.view());
-	auto cursor = db[mongo_config::c_schedules].find({}, opts);
+	return opts;
+}
+
+std::string MongoDriver::get_schedules()
+{
+	__excluder(std::initializer_list<std::string>({"odd", "even", "unusual", "subjects"}));
+	auto cursor = db[mongo_config::c_schedules]
+	.find({}, opts);
+	
 	std::string result{};
 	result += "[";
 	for (auto &&doc : cursor)
@@ -20,11 +37,12 @@ std::string MongoDriver::get_schedules()
 
 std::string MongoDriver::get_schedule_by_id(std::string id)
 {
-	mongocxx::options::find opts;
-	bsoncxx::builder::stream::document exclude_fields;
-	exclude_fields << "odd" << 0 << "even" << 0 << "unusual" << 0 << "subjects" << 0;
-	opts.projection(exclude_fields.view());
-	auto cursor = db[mongo_config::c_schedules].find(document{} << "_id" << bsoncxx::oid(id) << finalize, opts);
+	__excluder(std::initializer_list<std::string>({"odd", "even", "unusual", "subjects"}));
+	auto cursor = db[mongo_config::c_schedules]
+		.find(
+		document{}
+	<< "_id" << bsoncxx::oid(id) << finalize,
+		opts);
 	return bsoncxx::to_json(*cursor.begin());
 }
 
@@ -37,7 +55,6 @@ std::string MongoDriver::get_users_by_id(std::string id)
 {
 	return " ";
 }
-
 
 void MongoDriver::checks()
 {

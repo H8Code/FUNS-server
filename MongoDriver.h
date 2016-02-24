@@ -17,22 +17,30 @@
 using namespace mongo_config;
 
 class MongoDriver
-        : public DBDriver
-{
+: public DBDriver {
 public:
-    MongoDriver() {checks();};
-    std::string get_driver_name() override { return "Mongoc"; }
-    std::string get_schedules() override;
-    std::string get_schedule_by_id(std::string id) override;
-    std::string get_users() override;
-    std::string get_users_by_id(std::string id) override;
+
+	MongoDriver()
+	{
+		checks();
+	};
+
+	std::string get_driver_name() override
+	{
+		return "Mongoc";
+	}
+	std::string get_schedules() override;
+	std::string get_schedule_by_id(std::string id) override;
+	std::string get_users() override;
+	std::string get_users_by_id(std::string id) override;
 
 private:
-    void checks();
+	void checks();
 
-    mongocxx::instance inst{};
-    mongocxx::client mongo_client{mongocxx::uri{}};
-    mongocxx::database db{mongo_client[db_name]};
+	mongocxx::instance inst{};
+	mongocxx::client mongo_client{mongocxx::uri
+		{}};
+	mongocxx::database db{mongo_client[db_name]};
 };
 
 #endif // MONGODRIVER_H
