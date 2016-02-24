@@ -8,6 +8,7 @@
 #include "api/Schedules.h"
 #include "api/SchedulesID.h"
 #include "api/Users.h"
+#include "api/UsersID.h"
 
 using namespace restbed;
 using namespace std;
@@ -16,6 +17,7 @@ namespace resources {
     constexpr auto schedules = "/api/schedules";
     constexpr auto schedules_id = "/api/schedules/{id: .*}";
     constexpr auto users = "/api/users";
+    constexpr auto users_id = "/api/users/{id: .*}";
 }
 
 class RESTService
