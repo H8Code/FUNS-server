@@ -4,7 +4,6 @@
 #include <restbed>
 #include <memory>
 #include "../DBDriver.h"
-#include <iostream>
 
 using namespace restbed;
 using namespace std;
