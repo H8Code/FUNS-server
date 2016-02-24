@@ -11,7 +11,7 @@ public:
 private:
     void get_handler(const shared_ptr<Session> session) override
     {
-        cout << "users get" << endl;
+        session->close(OK, "users get");
     }
 };
 
