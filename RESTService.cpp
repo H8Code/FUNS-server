@@ -1,5 +1,10 @@
 #include "RESTService.h"
 
+#include "api/Schedules.h"
+#include "api/SchedulesID.h"
+#include "api/Users.h"
+#include "api/UsersID.h"
+
 RESTService::RESTService(shared_ptr<DBDriver> _db):
     db{_db},
     settings{make_shared<Settings>()},

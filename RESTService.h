@@ -5,10 +5,6 @@
 #include <restbed>
 #include "FunsConfig.h"
 #include "DBDriver.h"
-#include "api/Schedules.h"
-#include "api/SchedulesID.h"
-#include "api/Users.h"
-#include "api/UsersID.h"
 
 using namespace restbed;
 using namespace std;
