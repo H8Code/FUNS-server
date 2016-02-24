@@ -38,24 +38,24 @@ using bsoncxx::builder::stream::finalize;
  */
 using __list_t = std::initializer_list<std::string>;
 
-std::string MongoDriver::get_schedules()
+std::string MongoDriver::get_schedules() const
 {
 	__list_t exclude = {"odd", "even", "unusual", "subjects"};
 	__find_all_and_exclude(mongo_config::c_schedules, exclude)
 }
 
-std::string MongoDriver::get_schedule_by_id(std::string id)
+std::string MongoDriver::get_schedule_by_id(std::string id) const
 {
 	__list_t exclude = {"odd", "even", "unusual", "subjects"};
 	__find_id_and_exclude(mongo_config::c_schedules, bsoncxx::oid(id), exclude)
 }
 
-std::string MongoDriver::get_users()
+std::string MongoDriver::get_users() const
 {
 	__list_t exclude = {"password_hash", "salt"};
 	__find_all_and_exclude(mongo_config::c_users, exclude)}
 
-std::string MongoDriver::get_users_by_id(std::string id)
+std::string MongoDriver::get_users_by_id(std::string id) const
 {
 	__list_t exclude = {"password_hash", "salt"};
 	__find_id_and_exclude(mongo_config::c_users, id, exclude)
