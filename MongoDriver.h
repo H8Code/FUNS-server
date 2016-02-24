@@ -24,6 +24,8 @@ public:
     std::string get_driver_name() override { return "Mongoc"; }
     std::string get_schedules() override;
     std::string get_schedule_by_id(std::string id) override;
+    std::string get_users() override;
+    std::string get_users_by_id(std::string id) override;
 
 private:
     void checks();

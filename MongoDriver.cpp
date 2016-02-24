@@ -3,7 +3,7 @@
 using bsoncxx::builder::stream::document;
 using bsoncxx::builder::stream::finalize;
 
-std::__cxx11::string MongoDriver::get_schedules()
+std::string MongoDriver::get_schedules()
 {
 	mongocxx::options::find opts;
 	bsoncxx::builder::stream::document exclude_fields;
@@ -18,7 +18,7 @@ std::__cxx11::string MongoDriver::get_schedules()
 	return result;
 }
 
-std::__cxx11::string MongoDriver::get_schedule_by_id(std::string id)
+std::string MongoDriver::get_schedule_by_id(std::string id)
 {
 	mongocxx::options::find opts;
 	bsoncxx::builder::stream::document exclude_fields;
@@ -26,6 +26,16 @@ std::__cxx11::string MongoDriver::get_schedule_by_id(std::string id)
 	opts.projection(exclude_fields.view());
 	auto cursor = db[mongo_config::c_schedules].find(document{} << "_id" << bsoncxx::oid(id) << finalize, opts);
 	return bsoncxx::to_json(*cursor.begin());
+}
+
+std::string MongoDriver::get_users()
+{
+	return " ";
+}
+
+std::string MongoDriver::get_users_by_id(std::string id)
+{
+	return " ";
 }
 
 

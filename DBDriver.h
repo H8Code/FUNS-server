@@ -10,6 +10,8 @@ public:
     virtual std::string get_driver_name() = 0;
     virtual std::string get_schedules() = 0;
     virtual std::string get_schedule_by_id(std::string id) = 0;
+    virtual std::string get_users() = 0;
+    virtual std::string get_users_by_id(std::string id) = 0;
 };
 
 #endif //DBDRIVER_H
