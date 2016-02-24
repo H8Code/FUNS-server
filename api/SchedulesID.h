@@ -6,9 +6,6 @@
 #include "../DBDriver.h"
 #include "FunsResource.h"
 
-using namespace restbed;
-using namespace std;
-
 class APISchedulesID
 : public FunsResource {
 public:

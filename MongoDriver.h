@@ -30,9 +30,14 @@ public:
 		return "Mongoc";
 	}
 	std::string get_schedules() const override;
-	std::string get_schedule_by_id(std::string id) const override;
+	std::string get_schedule_by_id(const std::string &id) const override;
 	std::string get_users() const override;
-	std::string get_users_by_id(std::string id) const override;
+	std::string get_users_by_id(const std::string &id) const override;
+	
+	bool is_token_exist(const std::string &name, const std::string &token) const override;
+	bool save_token(const std::string &name, const std::string &token) override;
+	bool remove_token(const std::string& name, const std::string& token) override;
+	bool remove_tokens(const std::string& name) override;
 
 private:
 	void checks();
