@@ -11,18 +11,18 @@ using namespace std;
 class FunsResource
 : public Resource {
 public:
-    FunsResource() = delete;
-    explicit FunsResource(shared_ptr<DBDriver> _db, const string &path)
-    : Resource(),
-    db{_db}
-    {
-        set_path(path);
-        set_method_handler("GET", std::bind(&FunsResource::get_handler, this, std::placeholders::_1));
-    }
+	FunsResource() = delete;
+	explicit FunsResource(shared_ptr<DBDriver> _db, const string &path)
+	: Resource(),
+	db{_db}
+	{
+		set_path(path);
+		set_method_handler("GET", std::bind(&FunsResource::get_handler, this, std::placeholders::_1));
+	}
 protected:
-    shared_ptr<DBDriver> db;
+	shared_ptr<DBDriver> db;
 
-    virtual void get_handler(const shared_ptr<Session> session) = 0;
+	virtual void get_handler(const shared_ptr<Session> session) = 0;
 };
 
 #endif /* FUNSRESOURCE_H */

@@ -6,13 +6,19 @@
 class APIUsersID
 : public FunsResource {
 public:
-    APIUsersID(shared_ptr<DBDriver> db, const string &path)
-    : FunsResource(db, path) {}
+
+	APIUsersID(shared_ptr<DBDriver> db, const string &path)
+	: FunsResource(db, path)
+	{
+	}
 private:
-    void get_handler(const shared_ptr<Session> session) override
-    {
-        session->close(OK, "users_id get");
-    }
+
+	void get_handler(const shared_ptr<Session> session) override
+	{
+		const auto id = session->get_request()->get_path_parameter("id", true);
+		auto data = db->get_users_by_id(id);
+		session->close(OK, data);
+	}
 };
 
 #endif /* USERSID_H */

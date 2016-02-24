@@ -6,13 +6,18 @@
 class APIUsers
 : public FunsResource {
 public:
-    APIUsers(shared_ptr<DBDriver> db, const string &path)
-    : FunsResource(db, path) {}
+
+	APIUsers(shared_ptr<DBDriver> db, const string &path)
+	: FunsResource(db, path)
+	{
+	}
 private:
-    void get_handler(const shared_ptr<Session> session) override
-    {
-        session->close(OK, "users get");
-    }
+
+	void get_handler(const shared_ptr<Session> session) override
+	{
+		auto data = db->get_users();
+		session->close(OK, data);
+	}
 };
 
 
