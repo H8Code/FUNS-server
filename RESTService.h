@@ -13,6 +13,8 @@ using namespace restbed;
 using namespace std;
 
 namespace resources {
+    constexpr auto schedules = "/api/schedules";
+    constexpr auto schedules_id = "/api/schedules/{id: .*}";
     constexpr auto users = "/api/users";
 }
 
@@ -20,7 +22,6 @@ class RESTService
 {
     
 public:
-    
     RESTService() = delete;
     RESTService(shared_ptr<DBDriver> db);
 

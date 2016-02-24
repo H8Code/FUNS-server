@@ -4,26 +4,19 @@
 #include <restbed>
 #include <memory>
 #include "../DBDriver.h"
-#include <iostream>
+#include "FunsResource.h"
 
 using namespace restbed;
 using namespace std;
 
 class APISchedules
-: public Resource {
+: public FunsResource {
 public:
-    APISchedules() = delete;
-    explicit APISchedules(shared_ptr<DBDriver> db)
-    : Resource(),
-    db{db}
-    {
-        set_path("/api/schedules");
-        set_method_handler("GET", std::bind(&APISchedules::get_handler, this, std::placeholders::_1));
-    }
+    APISchedules(shared_ptr<DBDriver> db, const string &path)
+    : FunsResource(db, path) {}
 private:
-    shared_ptr<DBDriver> db;
-
-    void get_handler(const shared_ptr<Session> session) {
+    void get_handler(const shared_ptr<Session> session) override
+    {
         auto data = db->get_schedules();
         session->close(OK, data);
     }

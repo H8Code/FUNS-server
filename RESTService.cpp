@@ -10,8 +10,8 @@ RESTService::RESTService(shared_ptr<DBDriver> _db):
     settings->set_default_header( "Connection", "close" );
     settings->set_worker_limit(funs_config::worker_limit);
 
-    service->publish(make_shared<APISchedules>(db));
-    service->publish(make_shared<APISchedulesID>(db));
+    service->publish(make_shared<APISchedules>(db, resources::schedules));
+    service->publish(make_shared<APISchedulesID>(db, resources::schedules_id));
     service->publish(make_shared<APIUsers>(db, resources::users));
 }
 
