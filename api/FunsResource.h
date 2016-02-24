@@ -19,7 +19,7 @@ public:
         set_path(path);
         set_method_handler("GET", std::bind(&FunsResource::get_handler, this, std::placeholders::_1));
     }
-private:
+protected:
     shared_ptr<DBDriver> db;
 
     virtual void get_handler(const shared_ptr<Session> session) = 0;
