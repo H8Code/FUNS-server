@@ -7,13 +7,20 @@
 #include "DBDriver.h"
 #include "api/Schedules.h"
 #include "api/SchedulesID.h"
+#include "api/Users.h"
 
 using namespace restbed;
 using namespace std;
 
+namespace resources {
+    constexpr auto users = "/api/users";
+}
+
 class RESTService
 {
+    
 public:
+    
     RESTService() = delete;
     RESTService(shared_ptr<DBDriver> db);
 

@@ -12,6 +12,7 @@ RESTService::RESTService(shared_ptr<DBDriver> _db):
 
     service->publish(make_shared<APISchedules>(db));
     service->publish(make_shared<APISchedulesID>(db));
+    service->publish(make_shared<APIUsers>(db, resources::users));
 }
 
 void RESTService::start()
