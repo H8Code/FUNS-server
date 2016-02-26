@@ -13,6 +13,9 @@ namespace resources {
 	constexpr auto users = "/api/users";
 	constexpr auto users_id = "/api/users/{id: .*}";
 	constexpr auto schedules_odd = "/api/schedules/{id: .*}/odd";
+	constexpr auto schedules_even = "/api/schedules/{id: .*}/even";
+	constexpr auto schedules_unusual = "/api/schedules/{id: .*}/unusual";
+	constexpr auto schedules_subjects = "/api/schedules/{id: .*}/subjects";
 }
 
 class RESTService {

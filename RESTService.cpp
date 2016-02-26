@@ -7,6 +7,9 @@
 #include "api/Users.h"
 #include "api/UsersID.h"
 #include "api/SchedulesOdd.h"
+#include "api/SchedulesEven.h"
+#include "api/SchedulesUnusual.h"
+#include "api/SchedulesSubjects.h"
 
 using namespace funs;
 using namespace restbed;
@@ -30,6 +33,9 @@ auth_manager{make_shared<AuthManager>(_db)}
 	service->publish(make_shared<APIUsers>(db, resources::users));
 	service->publish(make_shared<APIUsersID>(db, resources::users_id));
 	service->publish(make_shared<APISchedulesOdd>(db, resources::schedules_odd));
+	service->publish(make_shared<APISchedulesEven>(db, resources::schedules_even));
+	service->publish(make_shared<APISchedulesUnusual>(db, resources::schedules_unusual));
+	service->publish(make_shared<APISchedulesSubjects>(db, resources::schedules_subjects));
 }
 
 void RESTService::start()

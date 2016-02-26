@@ -85,7 +85,42 @@ std::string MongoDriver::get_schedule_odd_by_id(const std::string &id) const
 		return "";
 	else
 		return bsoncxx::to_json(result.value().view()["odd"].get_array().value);
+}
 
+std::string MongoDriver::get_schedule_even_by_id(const std::string &id) const
+{
+	__list_t list = {"even"};
+	find_opts_t opts;
+	__opts_Xclude_fields(opts, list, 1);
+	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts)
+	if (result == bsoncxx::stdx::nullopt)
+		return "";
+	else
+		return bsoncxx::to_json(result.value().view()["even"].get_array().value);
+}
+
+std::string MongoDriver::get_schedule_unusual_by_id(const std::string &id) const
+{
+	__list_t list = {"unusual"};
+	find_opts_t opts;
+	__opts_Xclude_fields(opts, list, 1);
+	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts)
+	if (result == bsoncxx::stdx::nullopt)
+		return "";
+	else
+		return bsoncxx::to_json(result.value().view()["unusual"].get_array().value);
+}
+
+std::string MongoDriver::get_schedule_subjects_by_id(const std::string &id) const
+{
+	__list_t list = {"subjects"};
+	find_opts_t opts;
+	__opts_Xclude_fields(opts, list, 1);
+	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts)
+	if (result == bsoncxx::stdx::nullopt)
+		return "";
+	else
+		return bsoncxx::to_json(result.value().view()["subjects"].get_array().value);
 }
 
 std::string MongoDriver::get_schedule_by_id(const std::string &id) const
