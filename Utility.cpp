@@ -23,7 +23,7 @@ const string funs::utility::hash(const string &data)
 	mhash(hasher, &buffer, block_size);
 	mhash_deinit(hasher, &hash);
 	string ret(block_size, '-');
-	for (auto i = 0; i < block_size; ++i)
+	for (remove_cv<decltype(block_size)>::type i = 0; i < block_size; ++i)
 		ret[i] = hash[i];
 	return ret;
 }
