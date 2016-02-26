@@ -7,6 +7,8 @@ using bsoncxx::builder::stream::open_document;
 using bsoncxx::builder::stream::close_document;
 using bsoncxx::builder::stream::finalize;
 
+using find_opts_t = mongocxx::options::find;
+
 /*
  * Will create opts variable, used for excluding(and including) fields from find requests
  */
@@ -53,6 +55,15 @@ using bsoncxx::builder::stream::finalize;
 	.find( document{} << "_id" << id << finalize, opts); \
 	return bsoncxx::to_json(*cursor.begin());
 
+#define __opts_Xclude_fields(__opts, __list, __X) \
+	bsoncxx::builder::stream::document __Xclude_fields; \
+	for (auto &x: __list) __Xclude_fields << x << __X; \
+	__opts.projection(__Xclude_fields.view());
+
+#define __find_one_with_opts(__collection, __id,  __opts) \
+	auto result = db[__collection] \
+	.find_one( document{} << "_id" << __id<< finalize, __opts); \
+
 /*
  * List type for macro-lists
  */
@@ -66,8 +77,15 @@ std::string MongoDriver::get_schedules() const
 
 std::string MongoDriver::get_schedule_odd_by_id(const std::string &id) const
 {
-	__list_t include = {"odd"};
-	__find_id_and_include(mongo_config::c_schedules, bsoncxx::oid(id), include);
+	__list_t list = {"odd"};
+	find_opts_t opts;
+	__opts_Xclude_fields(opts, list, 1);
+	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts)
+	if (result == bsoncxx::stdx::nullopt)
+		return "";
+	else
+		return bsoncxx::to_json(result.value().view()["odd"].get_array().value);
+
 }
 
 std::string MongoDriver::get_schedule_by_id(const std::string &id) const
