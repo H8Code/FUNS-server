@@ -3,12 +3,9 @@
 
 #include <memory>
 #include <restbed>
-#include "FunsConfig.h"
+
 #include "DBDriver.h"
 #include "AuthManager.h"
-
-using namespace restbed;
-using namespace std;
 
 namespace resources {
 	constexpr auto schedules = "/api/schedules";
@@ -21,15 +18,15 @@ namespace resources {
 class RESTService {
 public:
 	RESTService() = delete;
-	RESTService(shared_ptr<DBDriver> db);
+	RESTService(std::shared_ptr<DBDriver> db);
 
 	void start();
 
 private:
-	shared_ptr<DBDriver> db;
-	shared_ptr<Settings> settings;
-	shared_ptr<Service> service;
-	shared_ptr<AuthManager> auth_manager;
+	std::shared_ptr<DBDriver> db;
+	std::shared_ptr<restbed::Settings> settings;
+	std::shared_ptr<restbed::Service> service;
+	std::shared_ptr<AuthManager> auth_manager;
 };
 
 #endif // SERVICE_H

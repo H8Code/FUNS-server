@@ -1,9 +1,6 @@
 #ifndef SCHEDULESID
 #define SCHEDULESID
 
-#include <restbed>
-#include <memory>
-#include "../DBDriver.h"
 #include "FunsResource.h"
 
 class APISchedulesID

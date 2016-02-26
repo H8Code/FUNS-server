@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#define FUNS_DEBUG
 #include "RESTService.h"
 #include "MongoDriver.h"
 

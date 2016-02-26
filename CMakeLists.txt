@@ -13,6 +13,7 @@ link_directories("../restbed/distribution/library")
 add_library(restbed SHARED IMPORTED)
 add_library(mongocxx SHARED IMPORTED)
 add_library(bsoncxx SHARED IMPORTED)
+add_library(mhash SHARED IMPORTED)
 
 aux_source_directory(. SRC_LIST)
 
@@ -21,3 +22,4 @@ target_link_libraries(funs-server "bsoncxx.so")
 target_link_libraries(funs-server "mongocxx.so")
 target_link_libraries(funs-server "restbed.so")
 target_link_libraries(funs-server "pthread.so")
+target_link_libraries(funs-server "mhash.so")

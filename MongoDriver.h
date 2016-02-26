@@ -1,8 +1,6 @@
 #ifndef MONGODRIVER_H
 #define MONGODRIVER_H
 
-#include <iostream>
-#include <fstream>
 #include <bsoncxx/json.hpp>
 
 #include <mongocxx/client.hpp>
@@ -10,11 +8,6 @@
 
 #include "DBDriver.h"
 #include "MongoConfig.h"
-
-#include <thread>
-#include <sstream>
-
-using namespace mongo_config;
 
 class MongoDriver
 : public DBDriver {
@@ -25,7 +18,7 @@ public:
 		checks();
 	};
 
-	std::string get_driver_name() const override 
+	std::string get_driver_name() const override
 	{
 		return "Mongoc";
 	}
@@ -34,7 +27,7 @@ public:
 	std::string get_schedule_by_id(const std::string &id) const override;
 	std::string get_users() const override;
 	std::string get_users_by_id(const std::string &id) const override;
-	
+
 	bool is_token_exist(const std::string &name, const std::string &token) const override;
 	bool save_token(const std::string &name, const std::string &token) override;
 	bool remove_token(const std::string& name, const std::string& token) override;
@@ -46,7 +39,7 @@ private:
 	mongocxx::instance inst{};
 	mongocxx::client mongo_client{mongocxx::uri
 		{}};
-	mongocxx::database db{mongo_client[db_name]};
+	mongocxx::database db{mongo_client[mongo_config::db_name]};
 };
 
 #endif // MONGODRIVER_H

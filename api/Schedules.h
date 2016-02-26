@@ -1,15 +1,9 @@
 #ifndef SCHEDULES
 #define SCHEDULES
 
-#include <restbed>
-#include <memory>
-#include "../DBDriver.h"
-#include "FunsResource.h"
-
-#include <iostream>
-#include <sstream>
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/types.hpp>
+#include "FunsResource.h"
 
 using namespace restbed;
 using namespace std;
@@ -32,8 +26,6 @@ private:
 
 	void post_handler(const shared_ptr<Session> session) override
 	{
-		std::cout << "POST" << std::endl;
-
 		const auto request = session->get_request();
 
 		size_t content_length{0};
