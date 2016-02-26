@@ -5,12 +5,12 @@
 
 using namespace std;
 
-const string funs_utility::hash(const string &data)
+const string funs::utility::hash(const string &data)
 {
 
 }
 
-const string funs_utility::random_string(const string::size_type lenght)
+const string funs::utility::random_string(const string::size_type lenght)
 {
 	static const string charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	static uniform_int_distribution<uint_fast8_t> selector(0, 35);

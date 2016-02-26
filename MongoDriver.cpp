@@ -68,9 +68,6 @@ std::string MongoDriver::get_users_by_id(const std::string &id) const
 
 void MongoDriver::checks()
 {
-	std::cout << "Mongo check" << std::endl;
-	//std::cout << bsoncxx::to_json(*db[mongo_config::c_users].find({}).begin());
-	//template_table();
 }
 
 bool MongoDriver::is_token_exist(const std::string &name, const std::string &token) const

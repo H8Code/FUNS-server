@@ -3,7 +3,8 @@
 
 #include <string>
 
-namespace funs_utility {
+namespace funs{
+namespace utility {
 	auto
 	hash(const std::string &data)
 	-> const std::string;
@@ -11,6 +12,7 @@ namespace funs_utility {
 	auto
 	random_string(const std::string::size_type lenght)
 	-> const std::string;
+}
 }
 
 #endif /* UTILITY_H */
