@@ -8,6 +8,7 @@ namespace config {
 	constexpr auto worker_limit = 4;
 	constexpr auto token_header = "Token";
 	constexpr auto token_lenght = 32;
+	constexpr auto salt_lenght = 32;
 }
 }
 
