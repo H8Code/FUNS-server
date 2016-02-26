@@ -6,6 +6,8 @@
 #include <random>
 
 #include "DBDriver.h"
+#include "Utility.h"
+#include "FunsConfig.h"
 
 #include <iostream>
 using namespace restbed;
@@ -13,7 +15,6 @@ using namespace std;
 
 class AuthManager {
 public:
-
 	enum request_t : uint_fast8_t {
 		GET = 1,
 		POST = 2
@@ -32,8 +33,6 @@ public:
 
 private:
 	shared_ptr<DBDriver> db;
-
-	static const string gen_token();
 };
 
 #endif /* AUTHMANAGER_H */
