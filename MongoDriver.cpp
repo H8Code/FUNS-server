@@ -8,12 +8,18 @@ using bsoncxx::builder::stream::close_document;
 using bsoncxx::builder::stream::finalize;
 
 /*
- * Will create opts variable, used for excluding fields from find requests
+ * Will create opts variable, used for excluding(and including) fields from find requests
  */
 #define __excluder(list...) \
 	mongocxx::options::find opts; \
 	bsoncxx::builder::stream::document exclude_fields; \
 	for (auto &x: list) exclude_fields << x << 0; \
+	opts.projection(exclude_fields.view());
+
+#define __includer(list...) \
+	mongocxx::options::find opts; \
+	bsoncxx::builder::stream::document exclude_fields; \
+	for (auto &x: list) exclude_fields << x << 1; \
 	opts.projection(exclude_fields.view());
 
 /*
@@ -38,6 +44,16 @@ using bsoncxx::builder::stream::finalize;
 	return bsoncxx::to_json(*cursor.begin());
 
 /*
+ * Will return documents from collection with matching id, including fields "include"
+ */
+
+#define __find_id_and_include(collection, id, include) \
+	__includer(include); \
+	auto cursor = db[collection] \
+	.find( document{} << "_id" << id << finalize, opts); \
+	return bsoncxx::to_json(*cursor.begin());
+
+/*
  * List type for macro-lists
  */
 using __list_t = std::initializer_list<std::string>;
@@ -46,6 +62,12 @@ std::string MongoDriver::get_schedules() const
 {
 	__list_t exclude = {"odd", "even", "unusual", "subjects"};
 	__find_all_and_exclude(mongo_config::c_schedules, exclude)
+}
+
+std::string MongoDriver::get_schedule_odd_by_id(const std::string &id) const
+{
+	__list_t include = {"odd"};
+	__find_id_and_include(mongo_config::c_schedules, bsoncxx::oid(id), include);
 }
 
 std::string MongoDriver::get_schedule_by_id(const std::string &id) const

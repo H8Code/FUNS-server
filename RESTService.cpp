@@ -4,6 +4,7 @@
 #include "api/SchedulesID.h"
 #include "api/Users.h"
 #include "api/UsersID.h"
+#include "api/SchedulesOdd.h"
 
 RESTService::RESTService(shared_ptr<DBDriver> _db) :
 db{_db},
@@ -22,6 +23,7 @@ auth_manager{make_shared<AuthManager>(_db)}
 	service->publish(make_shared<APISchedulesID>(db, resources::schedules_id));
 	service->publish(make_shared<APIUsers>(db, resources::users));
 	service->publish(make_shared<APIUsersID>(db, resources::users_id));
+	service->publish(make_shared<APISchedulesOdd>(db, resources::schedules_odd));
 }
 
 void RESTService::start()

@@ -30,6 +30,7 @@ public:
 		return "Mongoc";
 	}
 	std::string get_schedules() const override;
+	std::string get_schedule_odd_by_id(const std::string &id) const override;
 	std::string get_schedule_by_id(const std::string &id) const override;
 	std::string get_users() const override;
 	std::string get_users_by_id(const std::string &id) const override;
