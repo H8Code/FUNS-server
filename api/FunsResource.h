@@ -14,6 +14,7 @@ class FunsResource
 : public Resource {
 public:
 	FunsResource() = delete;
+	virtual ~FunsResource() = default;
 	explicit FunsResource(shared_ptr<DBDriver> _db, const string &path, shared_ptr<AuthManager> _auth = shared_ptr<AuthManager>())
 	: Resource(),
 	db{_db},
