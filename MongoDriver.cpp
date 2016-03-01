@@ -71,13 +71,13 @@ using find_opts_t = mongocxx::options::find;
 /*
  * List type for macro-lists
  */
-using __list_t = std::initializer_list<std::string>;
+using list_t__ = std::initializer_list<std::string>;
 
 std::string MongoDriver::get_schedules() const
 {
 //	__list_t exclude = {"odd", "even", "unusual", "subjects"};
 //	__find_all_and_exclude(mongo_config::c_schedules, exclude)
-	__list_t list = {"odd", "even", "unusual", "subjects"};
+	list_t__ list = {"odd", "even", "unusual", "subjects"};
 	find_opts_t opts;
 	__opts_Xclude_fields(opts, list, 0);
 	__find_all_with_opts(mongo_config::c_schedules, opts);
@@ -91,7 +91,7 @@ std::string MongoDriver::get_schedules() const
 
 std::string MongoDriver::get_schedule_odd_by_id(const std::string &id) const
 {
-	__list_t list = {"odd"};
+	list_t__ list = {"odd"};
 	find_opts_t opts;
 	__opts_Xclude_fields(opts, list, 1);
 	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts);
@@ -103,7 +103,7 @@ std::string MongoDriver::get_schedule_odd_by_id(const std::string &id) const
 
 std::string MongoDriver::get_schedule_even_by_id(const std::string &id) const
 {
-	__list_t list = {"even"};
+	list_t__ list = {"even"};
 	find_opts_t opts;
 	__opts_Xclude_fields(opts, list, 1);
 	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts);
@@ -115,7 +115,7 @@ std::string MongoDriver::get_schedule_even_by_id(const std::string &id) const
 
 std::string MongoDriver::get_schedule_unusual_by_id(const std::string &id) const
 {
-	__list_t list = {"unusual"};
+	list_t__ list = {"unusual"};
 	find_opts_t opts;
 	__opts_Xclude_fields(opts, list, 1);
 	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts);
@@ -127,7 +127,7 @@ std::string MongoDriver::get_schedule_unusual_by_id(const std::string &id) const
 
 std::string MongoDriver::get_schedule_subjects_by_id(const std::string &id) const
 {
-	__list_t list = {"subjects"};
+	list_t__ list = {"subjects"};
 	find_opts_t opts;
 	__opts_Xclude_fields(opts, list, 1);
 	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts)
@@ -139,7 +139,7 @@ std::string MongoDriver::get_schedule_subjects_by_id(const std::string &id) cons
 
 std::string MongoDriver::get_schedule_by_id(const std::string &id) const
 {
-	__list_t list = {"odd", "even", "unusual", "subjects"};
+	list_t__ list = {"odd", "even", "unusual", "subjects"};
 	find_opts_t opts;
 	__opts_Xclude_fields(opts, list, 0);
 	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts)
@@ -151,13 +151,13 @@ std::string MongoDriver::get_schedule_by_id(const std::string &id) const
 
 std::string MongoDriver::get_users() const
 {
-	__list_t exclude = {"password_hash", "salt"};
+	list_t__ exclude = {"password_hash", "salt"};
 	__find_all_and_exclude(mongo_config::c_users, exclude)
 }
 
 std::string MongoDriver::get_users_by_id(const std::string &id) const
 {
-	__list_t list = {"password_hash", "salt"};
+	list_t__ list = {"password_hash", "salt"};
 	find_opts_t opts;
 	__opts_Xclude_fields(opts, list, 0);
 	__find_one_with_opts(mongo_config::c_users, id, opts)
