@@ -4,6 +4,7 @@
 #include <limits>
 #include <exception>
 #include <mhash.h>
+#include <bsoncxx/json.hpp>
 
 constexpr auto __HASH_ID = MHASH_MD5;
 
@@ -15,15 +16,15 @@ const string funs::utility::hash(const string &data)
 	const auto block_size = mhash_get_block_size(__HASH_ID);
 	if (hasher == MHASH_FAILED)
 		throw runtime_error(":c");
-	
+
 	uint8_t hash[block_size],
 		buffer[data.size()];
-	
+
 	memcpy(buffer, data.c_str(), data.size());
 	mhash(hasher, &buffer, block_size);
 	mhash_deinit(hasher, &hash);
 	string ret(block_size, '-');
-	for (remove_cv<decltype(block_size)>::type i = 0; i < block_size; ++i)
+	for (remove_cv < decltype(block_size)>::type i = 0; i < block_size; ++i)
 		ret[i] = hash[i];
 	return ret;
 }
@@ -55,4 +56,13 @@ uintmax_t funs::utility::seed()
 		numeric_limits<uintmax_t>::max()
 	};
 	return dist(rnd);
+}
+
+string make_JSON_array_from_cursor(const auto &cursor)
+{
+	string result{}; \
+	result += "["; \
+	for (auto &&doc : cursor) result += bsoncxx::to_json(doc) += ", ";
+	result += "]"; \
+	return result;
 }

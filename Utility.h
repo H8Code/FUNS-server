@@ -24,6 +24,9 @@ namespace utility {
 	
 	auto seed()
 	-> uintmax_t;
+	
+	auto make_JSON_array_from_cursor(const auto &cursor)
+	-> std::string;
 }
 }
 
