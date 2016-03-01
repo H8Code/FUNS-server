@@ -5,6 +5,7 @@
 
 #include <mongocxx/client.hpp>
 #include <mongocxx/instance.hpp>
+#include <utility>
 
 #include "DBDriver.h"
 #include "MongoConfig.h"
@@ -44,6 +45,12 @@ private:
 	mongocxx::client mongo_client{mongocxx::uri
 		{}};
 	mongocxx::database db{mongo_client[mongo_config::db_name]};
+
+	template<class opts_t = mongocxx::options::find,
+	class stream_t = bsoncxx::builder::stream::document,
+	class list_t, class param_t>
+	static opts_t Xcluder(list_t const &list, param_t const param);
 };
+
 
 #endif // MONGODRIVER_H

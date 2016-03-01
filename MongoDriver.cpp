@@ -6,8 +6,12 @@ using bsoncxx::builder::stream::close_array;
 using bsoncxx::builder::stream::open_document;
 using bsoncxx::builder::stream::close_document;
 using bsoncxx::builder::stream::finalize;
+using namespace std;
 
 using find_opts_t = mongocxx::options::find;
+using doc_builder_t = bsoncxx::builder::stream::document;
+using list_t__ = std::initializer_list<string>;
+
 
 /*
  * Will create opts variable, used for excluding(and including) fields from find requests
@@ -59,6 +63,16 @@ using find_opts_t = mongocxx::options::find;
 	bsoncxx::builder::stream::document __Xclude_fields; \
 	for (auto &x: __list) __Xclude_fields << x << __X; \
 	__opts.projection(__Xclude_fields.view());
+	
+template<class opts_t, class stream_t, class list_t, class param_t>
+opts_t MongoDriver::Xcluder(const list_t& list, const param_t param)
+{
+	stream_t stream;
+	for (auto &&x: list) stream << x << param;
+	opts_t opts;
+	opts.projection(stream.extract());
+	return opts;
+}
 
 #define __find_one_with_opts(__collection, __id,  __opts) \
 	auto result = db[__collection] \
@@ -67,11 +81,6 @@ using find_opts_t = mongocxx::options::find;
 #define __find_all_with_opts(__collection, __opts) \
 	auto result = db[__collection] \
 	.find( {},__opts);
-
-/*
- * List type for macro-lists
- */
-using list_t__ = std::initializer_list<std::string>;
 
 std::string MongoDriver::get_schedules() const
 {
@@ -92,8 +101,7 @@ std::string MongoDriver::get_schedules() const
 std::string MongoDriver::get_schedule_odd_by_id(const std::string &id) const
 {
 	list_t__ list = {"odd"};
-	find_opts_t opts;
-	__opts_Xclude_fields(opts, list, 1);
+	auto opts = Xcluder(list, 1);
 	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts);
 	if (result == bsoncxx::stdx::nullopt)
 		return "";
