@@ -13,10 +13,7 @@ class MongoDriver
 : public DBDriver {
 public:
 
-	MongoDriver()
-	{
-		checks();
-	};
+	MongoDriver() = default;
 
 	std::string get_driver_name() const override
 	{
@@ -43,8 +40,6 @@ public:
 
 
 private:
-	void checks();
-
 	mongocxx::instance inst{};
 	mongocxx::client mongo_client{mongocxx::uri
 		{}};
