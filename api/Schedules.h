@@ -1,22 +1,15 @@
 #ifndef SCHEDULES
 #define SCHEDULES
 
-#include <bsoncxx/json.hpp>
-#include <bsoncxx/types.hpp>
-#include "FunsResource.h"
+#include "../Utility.h"
+#include "FunsResourceImpl.h"
 
 using namespace restbed;
 using namespace std;
 
-class APISchedules
-: public FunsResource {
+class SchedulesImpl
+: public FunsResourceImpl {
 public:
-
-	APISchedules(shared_ptr<DBDriver> db, const string &path, shared_ptr<AuthManager> auth)
-	: FunsResource(db, path, auth)
-	{
-	}
-private:
 
 	void get_handler(const shared_ptr<Session> session) override
 	{
@@ -32,9 +25,9 @@ private:
 		request->get_header("Content-Length", content_length);
 
 		session->fetch(content_length,
-			[ = ](const shared_ptr<Session> session, const Bytes & body){
+			[ = ](const shared_ptr<Session> session, const Bytes &body){
 
-			auto name = __get_field_from_bytes(body, "creator");
+			const string name = funs::utility::field_from_JSON_bytes(body, "creator");
 
 			if (auth->allow(AuthManager::request_t::POST, session, name))
 				session->close(OK);

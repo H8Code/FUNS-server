@@ -10,6 +10,7 @@
 #include "api/SchedulesEven.h"
 #include "api/SchedulesUnusual.h"
 #include "api/SchedulesSubjects.h"
+#include "api/FunsResource.h"
 
 using namespace funs;
 using namespace restbed;
@@ -26,16 +27,19 @@ auth_manager{make_shared<AuthManager>(_db)}
 	settings->set_default_header("Connection", "close");
 	settings->set_worker_limit(config::worker_limit);
 
-	db->remove_token("mom", "WIDI2P7S3DEDBKY4Y320C8OQEUKONPWF");
-	
-	service->publish(make_shared<APISchedules>(db, resources::schedules, auth_manager));
-	service->publish(make_shared<APISchedulesID>(db, resources::schedules_id));
-	service->publish(make_shared<APIUsers>(db, resources::users));
-	service->publish(make_shared<APIUsersID>(db, resources::users_id));
-	service->publish(make_shared<APISchedulesOdd>(db, resources::schedules_odd));
-	service->publish(make_shared<APISchedulesEven>(db, resources::schedules_even));
-	service->publish(make_shared<APISchedulesUnusual>(db, resources::schedules_unusual));
-	service->publish(make_shared<APISchedulesSubjects>(db, resources::schedules_subjects));
+	auto p = [ & ] (auto path, unique_ptr<FunsResourceImpl> impl)
+	{
+		service->publish(make_shared<FunsResource>(path, std::move(impl), db, auth_manager));
+	};
+	p(resources::schedules, make_unique<SchedulesImpl>());
+	p(resources::schedules_id, make_unique<SchedulesIDImpl>());
+	p(resources::schedules_odd, make_unique<SchedulesOddImpl>());
+	p(resources::schedules_even, make_unique<SchedulesEvenImpl>());
+	p(resources::schedules_unusual, make_unique<SchedulesUnusualImpl>());
+	p(resources::schedules_subjects, make_unique<SchedulesSubjectsImpl>());
+	p(resources::users, make_unique<UsersImpl>());
+	p(resources::users_id, make_unique<UsersIDImpl>());
+
 }
 
 void RESTService::start()

@@ -1,20 +1,11 @@
 #ifndef SCHEDULESUNUSUAL
 #define SCHEDULESUNUSUAL
 
-#include <restbed>
-#include <memory>
-#include "../DBDriver.h"
-#include "FunsResource.h"
+#include "FunsResourceImpl.h"
 
-class APISchedulesUnusual
-: public FunsResource {
+class SchedulesUnusualImpl
+: public FunsResourceImpl {
 public:
-
-        APISchedulesUnusual(shared_ptr<DBDriver> db, const string &path)
-        : FunsResource(db, path)
-        {
-        }
-private:
 
         void get_handler(const shared_ptr<Session> session)
         {

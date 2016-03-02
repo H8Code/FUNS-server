@@ -1,17 +1,11 @@
 #ifndef USERS_H
 #define USERS_H
 
-#include "FunsResource.h"
+#include "FunsResourceImpl.h"
 
-class APIUsers
-: public FunsResource {
+class UsersImpl
+: public FunsResourceImpl {
 public:
-
-	APIUsers(shared_ptr<DBDriver> db, const string &path)
-	: FunsResource(db, path)
-	{
-	}
-private:
 
 	void get_handler(const shared_ptr<Session> session) override
 	{

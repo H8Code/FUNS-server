@@ -4,7 +4,6 @@
 #include <limits>
 #include <exception>
 #include <mhash.h>
-#include <bsoncxx/json.hpp>
 
 constexpr auto __HASH_ID = MHASH_MD5;
 
@@ -58,11 +57,18 @@ uintmax_t funs::utility::seed()
 	return dist(rnd);
 }
 
-string make_JSON_array_from_cursor(const auto &cursor)
+string funs::utility::make_JSON_array_from_cursor(const auto &cursor)
 {
-	string result{}; \
-	result += "["; \
+	string result{};
+	result += "[";
 	for (auto &&doc : cursor) result += bsoncxx::to_json(doc) += ", ";
-	result += "]"; \
+	result += "]";
 	return result;
+}
+
+string funs::utility::field_from_JSON_bytes(const restbed::Bytes &body, const std::string &field)
+{
+		const auto doc = bsoncxx::from_json(string{body.begin(), body.end()});
+		const auto creator_b = doc.view()[field].get_utf8().value;
+		return string{creator_b.begin(), creator_b.end()};
 }

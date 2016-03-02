@@ -1,17 +1,11 @@
 #ifndef SCHEDULESID
 #define SCHEDULESID
 
-#include "FunsResource.h"
+#include "FunsResourceImpl.h"
 
-class APISchedulesID
-: public FunsResource {
+class SchedulesIDImpl
+: public FunsResourceImpl {
 public:
-
-	APISchedulesID(shared_ptr<DBDriver> db, const string &path)
-	: FunsResource(db, path)
-	{
-	}
-private:
 
 	void get_handler(const shared_ptr<Session> session)
 	{
