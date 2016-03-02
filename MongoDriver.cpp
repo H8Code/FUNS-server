@@ -1,4 +1,5 @@
 #include "MongoDriver.h"
+#include "Utility.h"
 
 using bsoncxx::builder::stream::document;
 using bsoncxx::builder::stream::open_array;
@@ -12,145 +13,77 @@ using find_opts_t = mongocxx::options::find;
 using doc_builder_t = bsoncxx::builder::stream::document;
 using list_t__ = std::initializer_list<string>;
 
-
-/*
- * Will create opts variable, used for excluding(and including) fields from find requests
- */
-#define __excluder(list...) \
-	mongocxx::options::find opts; \
-	bsoncxx::builder::stream::document exclude_fields; \
-	for (auto &x: list) exclude_fields << x << 0; \
-	opts.projection(exclude_fields.view());
-
-#define __includer(list...) \
-	mongocxx::options::find opts; \
-	bsoncxx::builder::stream::document exclude_fields; \
-	for (auto &x: list) exclude_fields << x << 1; \
-	opts.projection(exclude_fields.view());
-
-/*
- * Will return all documents from collection, excluding fields "exclude"
- */
-#define __find_all_and_exclude(collection, exclude) \
-	__excluder(exclude); \
-	auto cursor = db[collection].find({}, opts); \
-	std::string result{}; \
-	result += "["; \
-	for (auto &&doc : cursor) result += bsoncxx::to_json(doc) += ", "; \
-	result += "]"; \
-	return result;
-
-/*
- * Will return documents from collection with matching id, excluding fields "exclude"
- */
-#define __find_id_and_exclude(collection, id, exclude) \
-	__excluder(exclude); \
-	auto cursor = db[collection] \
-	.find( document{} << "_id" << id << finalize, opts); \
-	return bsoncxx::to_json(*cursor.begin());
-
-/*
- * Will return documents from collection with matching id, including fields "include"
- */
-
-#define __find_id_and_include(collection, id, include) \
-	__includer(include); \
-	auto cursor = db[collection] \
-	.find( document{} << "_id" << id << finalize, opts); \
-	return bsoncxx::to_json(*cursor.begin());
-
-#define __opts_Xclude_fields(__opts, __list, __X) \
-	bsoncxx::builder::stream::document __Xclude_fields; \
-	for (auto &x: __list) __Xclude_fields << x << __X; \
-	__opts.projection(__Xclude_fields.view());
-	
 template<class opts_t, class stream_t, class list_t, class param_t>
 opts_t MongoDriver::Xcluder(const list_t& list, const param_t param)
 {
 	stream_t stream;
-	for (auto &&x: list) stream << x << param;
+	for (auto &&x : list) stream << x << param;
 	opts_t opts;
 	opts.projection(stream.extract());
 	return opts;
 }
 
-#define __find_one_with_opts(__collection, __id,  __opts) \
-	auto result = db[__collection] \
-	.find_one( document{} << "_id" << __id<< finalize, __opts); \
+mongocxx::cursor MongoDriver::find_all(mongocxx::collection collection, bsoncxx::document::view_or_value request, mongocxx::options::find &opts)
+{
+	return collection.find(move(request), opts);
+}
 
-#define __find_all_with_opts(__collection, __opts) \
-	auto result = db[__collection] \
-	.find( {},__opts);
+optional_t<bsoncxx::document::value> MongoDriver::find_one(mongocxx::collection collection, bsoncxx::document::view_or_value request, mongocxx::options::find &opts)
+{
+	return collection.find_one(move(request), opts);
+}
+
+std::string MongoDriver::find_one_and_get_field(mongocxx::collection &&collection, const string &id, const string &field)
+{
+	auto opts = Xcluder(list_t__{field}, 1);
+
+	auto result = find_one(move(collection),
+		document
+	{}
+	<< "_id" << bsoncxx::oid(id) << finalize,
+		opts);
+	if (result == bsoncxx::stdx::nullopt)
+		return "";
+	else
+		return bsoncxx::to_json(result.value().view()[field]);
+}
 
 std::string MongoDriver::get_schedules() const
 {
-//	__list_t exclude = {"odd", "even", "unusual", "subjects"};
-//	__find_all_and_exclude(mongo_config::c_schedules, exclude)
 	list_t__ list = {"odd", "even", "unusual", "subjects"};
-	find_opts_t opts;
-	__opts_Xclude_fields(opts, list, 0);
-	__find_all_with_opts(mongo_config::c_schedules, opts);
-
-	std::string c_result;
-	c_result += "[";
-	for (auto &&doc : result) c_result += bsoncxx::to_json(doc) += ", ";
-	c_result += "]";
-	return c_result;
+	auto opts = Xcluder(list, 0);
+	auto result = find_all(db[mongo_config::c_schedules],{}, opts);
+	return string(funs::utility::make_JSON_array_from_cursor(result));
 }
 
 std::string MongoDriver::get_schedule_odd_by_id(const std::string &id) const
 {
-	list_t__ list = {"odd"};
-	auto opts = Xcluder(list, 1);
-	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts);
-	if (result == bsoncxx::stdx::nullopt)
-		return "";
-	else
-		return bsoncxx::to_json(result.value().view()["odd"].get_array().value);
+	return find_one_and_get_field(db[mongo_config::c_schedules], id, "odd");
 }
 
 std::string MongoDriver::get_schedule_even_by_id(const std::string &id) const
 {
-	list_t__ list = {"even"};
-	find_opts_t opts;
-	__opts_Xclude_fields(opts, list, 1);
-	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts);
-	if (result == bsoncxx::stdx::nullopt)
-		return "";
-	else
-		return bsoncxx::to_json(result.value().view()["even"].get_array().value);
+	return find_one_and_get_field(db[mongo_config::c_schedules], id, "even");
 }
 
 std::string MongoDriver::get_schedule_unusual_by_id(const std::string &id) const
 {
-	list_t__ list = {"unusual"};
-	find_opts_t opts;
-	__opts_Xclude_fields(opts, list, 1);
-	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts);
-	if (result == bsoncxx::stdx::nullopt)
-		return "";
-	else
-		return bsoncxx::to_json(result.value().view()["unusual"].get_array().value);
+	return find_one_and_get_field(db[mongo_config::c_schedules], id, "unusual");
 }
 
 std::string MongoDriver::get_schedule_subjects_by_id(const std::string &id) const
 {
-	list_t__ list = {"subjects"};
-	find_opts_t opts;
-	__opts_Xclude_fields(opts, list, 1);
-	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts)
-	if (result == bsoncxx::stdx::nullopt)
-		return "";
-	else
-		return bsoncxx::to_json(result.value().view()["subjects"].get_array().value);
+	return find_one_and_get_field(db[mongo_config::c_schedules], id, "subjects");
 }
 
 std::string MongoDriver::get_schedule_by_id(const std::string &id) const
 {
 	list_t__ list = {"odd", "even", "unusual", "subjects"};
-	find_opts_t opts;
-	__opts_Xclude_fields(opts, list, 0);
-	__find_one_with_opts(mongo_config::c_schedules, bsoncxx::oid(id), opts)
+	auto opts = Xcluder(list, 0);
+	auto result = find_one(db[mongo_config::c_schedules],
+		document{}
+	<< "_id" << bsoncxx::oid(id) << finalize,
+		opts);
 	if (result == bsoncxx::stdx::nullopt)
 		return "";
 	else
@@ -159,16 +92,20 @@ std::string MongoDriver::get_schedule_by_id(const std::string &id) const
 
 std::string MongoDriver::get_users() const
 {
-	list_t__ exclude = {"password_hash", "salt"};
-	__find_all_and_exclude(mongo_config::c_users, exclude)
+	list_t__ list = {"password_hash", "salt"};
+	auto opts = Xcluder(list, 0);
+	auto cursor = find_all(db[mongo_config::c_users],{}, opts);
+	return funs::utility::make_JSON_array_from_cursor(cursor);
 }
 
 std::string MongoDriver::get_users_by_id(const std::string &id) const
 {
 	list_t__ list = {"password_hash", "salt"};
-	find_opts_t opts;
-	__opts_Xclude_fields(opts, list, 0);
-	__find_one_with_opts(mongo_config::c_users, id, opts)
+	auto opts = Xcluder(list, 0);
+	auto result = find_one(db[mongo_config::c_users],
+		document{}
+	<< "_id" << id << finalize,
+		opts);
 	if (result == bsoncxx::stdx::nullopt)
 		return "";
 	else

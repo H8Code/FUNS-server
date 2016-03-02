@@ -10,6 +10,9 @@
 #include "DBDriver.h"
 #include "MongoConfig.h"
 
+template<class T>
+using optional_t = bsoncxx::stdx::optional<T>;
+
 class MongoDriver
 : public DBDriver {
 public:
@@ -49,7 +52,27 @@ private:
 	template<class opts_t = mongocxx::options::find,
 	class stream_t = bsoncxx::builder::stream::document,
 	class list_t, class param_t>
-	static opts_t Xcluder(list_t const &list, param_t const param);
+	static auto
+	Xcluder(list_t const &list, param_t const param)
+	-> opts_t;
+
+	static inline auto
+	find_all(mongocxx::collection collection,
+		bsoncxx::document::view_or_value request,
+		mongocxx::options::find &opts)
+	-> mongocxx::cursor;
+
+	static inline auto
+	find_one(mongocxx::collection collection,
+		bsoncxx::document::view_or_value request,
+		mongocxx::options::find &opts)
+	-> optional_t<bsoncxx::document::value>;
+
+	static auto
+	find_one_and_get_field(mongocxx::collection &&collection,
+		const std::string &id,
+		const std::string &field)
+	-> std::string;
 };
 
 

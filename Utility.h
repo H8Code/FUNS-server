@@ -7,6 +7,7 @@
 
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/types.hpp>
+#include <mongocxx/cursor.hpp>
 
 #ifdef FUNS_DEBUG
 
@@ -29,14 +30,11 @@ namespace utility {
 	auto seed()
 	-> uintmax_t;
 	
-	auto make_JSON_array_from_cursor(const auto &cursor)
+	auto make_JSON_array_from_cursor(mongocxx::cursor &cursor)
 	-> std::string;
 	
-//	auto field_from_JSON_bytes(const restbed::Bytes &body, const std::string &field)
-//	-> std::string
-//	{
-//	}
-	std::string field_from_JSON_bytes(const restbed::Bytes &body, const std::string &field);
+	auto field_from_JSON_bytes(const restbed::Bytes &body, const std::string &field)
+	-> std::string;
 }
 }
 
