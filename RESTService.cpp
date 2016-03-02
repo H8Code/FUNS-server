@@ -1,4 +1,5 @@
 #include "RESTService.h"
+#include <csignal>
 
 
 #include "FunsConfig.h"
@@ -40,10 +41,29 @@ auth_manager{make_shared<AuthManager>(_db)}
 	p(resources::users, make_unique<UsersImpl>());
 	p(resources::users_id, make_unique<UsersIDImpl>());
 
+	service->set_ready_handler([](Service & s)
+	{
+		utility::log()->info("Service is ready.");
+	});
+
+	service->set_signal_handler(SIGINT, [ & ](const int s)
+	{
+		utility::log()->alert("SIGINT recived!");
+		utility::log()->flush();
+		exit(EXIT_SUCCESS);
+	});
+
+	service->set_error_handler([](const int, const exception& e, const shared_ptr<Session> session)
+	{
+		constexpr auto error_str = "Internal Server Error ";
+		if (session->is_open())
+			session->close(INTERNAL_SERVER_ERROR, error_str);
+		utility::log()->error() << error_str << e.what();
+	});
+	
 }
 
 void RESTService::start()
 {
 	service->start(settings);
 }
-

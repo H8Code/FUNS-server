@@ -9,6 +9,7 @@ namespace config {
 	constexpr auto token_header = "Authorization";
 	constexpr auto token_lenght = 32;
 	constexpr auto salt_lenght = 32;
+	constexpr auto log_file = "log";
 }
 }
 
