@@ -28,7 +28,7 @@ cd -
 
 ## Building sources
 ```bash
-git clone --recuirsive https://github.com/H8Code/FUNS-server.git
+git clone --recursive https://github.com/H8Code/FUNS-server.git
 mkdir build
 cd build
 cmake ../FUNS-server
