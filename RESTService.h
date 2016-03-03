@@ -21,7 +21,7 @@ namespace resources {
 class RESTService {
 public:
 	RESTService() = delete;
-	RESTService(std::shared_ptr<DBDriver> db);
+	explicit RESTService(std::shared_ptr<DBDriver> db);
 
 	void start();
 

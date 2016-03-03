@@ -7,7 +7,8 @@
  */
 class DBDriver {
 public:
-
+	virtual ~DBDriver() = default;
+	
 	virtual std::string get_driver_name() const = 0;
 	virtual std::string get_schedules() const = 0;
         virtual std::string get_schedule_odd_by_id(const std::string &id) const = 0;

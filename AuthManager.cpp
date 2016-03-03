@@ -39,7 +39,6 @@ bool AuthManager::allow(request_t request, const shared_ptr<Session> session, co
 
 const string AuthManager::login(const string &user, const string & password)
 {
-	cout << "login..." << endl;
 	auto token = utility::random_string(config::token_lenght);
 	db->save_token(user, token);
 	return token;

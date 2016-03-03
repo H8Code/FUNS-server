@@ -17,7 +17,8 @@ public:
 		POST = 2
 	};
 
-	AuthManager(std::shared_ptr<DBDriver> _db)
+	AuthManager() = delete;
+	explicit AuthManager(std::shared_ptr<DBDriver> _db)
 	: db{_db}
 	{
 	}

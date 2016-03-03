@@ -15,7 +15,6 @@ class FunsResource
 : public Resource {
 public:
 	FunsResource() = delete;
-	virtual ~FunsResource() = default;
 	explicit FunsResource(
 		const string &path,
 		unique_ptr<FunsResourceImpl> impl_,

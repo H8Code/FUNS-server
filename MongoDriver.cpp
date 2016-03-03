@@ -9,8 +9,6 @@ using bsoncxx::builder::stream::close_document;
 using bsoncxx::builder::stream::finalize;
 using namespace std;
 
-using find_opts_t = mongocxx::options::find;
-using doc_builder_t = bsoncxx::builder::stream::document;
 using list_t__ = std::initializer_list<string>;
 
 template<class opts_t, class stream_t, class list_t, class param_t>

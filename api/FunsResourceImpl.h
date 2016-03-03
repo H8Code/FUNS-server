@@ -9,6 +9,7 @@
 class FunsResourceImpl {
 public:
 	FunsResourceImpl() = default;
+	virtual ~FunsResourceImpl() = default;
 
 	virtual void get_handler(const std::shared_ptr<restbed::Session> session)
 	{

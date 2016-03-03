@@ -7,7 +7,7 @@
 
 std::shared_ptr<DBDriver> db
 {
-	new MongoDriver
+	std::make_shared<MongoDriver>()
 };
 
 void hello()
