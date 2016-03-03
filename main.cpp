@@ -28,8 +28,8 @@ int main(const int, const char**)
 		std::cout << "Log failed: " << ex.what() << std::endl;
 	}
 	try {
-		auto s = std::make_shared<RESTService>(db);
 		hello();
+		auto s = std::make_shared<RESTService>(db);
 		s->start();
 	} catch (const std::exception& ex) {
 		std::cerr << "UNEXPECTED ERROR: " << ex.what() << std::endl;
