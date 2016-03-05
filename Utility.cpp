@@ -60,10 +60,22 @@ uintmax_t funs::utility::seed()
 
 string funs::utility::make_JSON_array_from_cursor(mongocxx::cursor &cursor)
 {
+	constexpr auto
+		open__ = '[',
+		close__ = ']',
+		delim__ = ',',
+		empty__ = ' ';
+
 	string result{};
-	result += "[";
-	for (auto &&doc : cursor) result += bsoncxx::to_json(doc) += ", ";
-	result += "]";
+	result += open__;
+
+	for (auto &&doc : cursor)
+		result += bsoncxx::to_json(doc) += delim__;
+
+	if (result.size() not_eq 1)
+		*result.rbegin() = empty__;
+
+	result += close__;
 	return result;
 }
 
