@@ -43,7 +43,7 @@ std::string MongoDriver::find_one_and_get_field(mongocxx::collection &&collectio
 	if (result == bsoncxx::stdx::nullopt)
 		return "";
 	else
-		return bsoncxx::to_json(result.value().view()[field]);
+		return bsoncxx::to_json(result.value().view()[field].get_value());
 }
 
 std::string MongoDriver::get_schedules() const
