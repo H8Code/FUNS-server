@@ -4,7 +4,7 @@
 namespace funs {
 namespace config {
 	constexpr auto port = 34666;
-	constexpr auto bind_addres = "127.0.0.1";
+	constexpr auto bind_addres = "localhost";
 	constexpr auto worker_limit = 4;
 	constexpr auto token_header = "Authorization";
 	constexpr auto token_lenght = 32;
