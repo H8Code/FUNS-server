@@ -63,8 +63,7 @@ string funs::utility::make_JSON_array_from_cursor(mongocxx::cursor &cursor)
 	constexpr auto
 		open__ = '[',
 		close__ = ']',
-		delim__ = ',',
-		empty__ = ' ';
+		delim__ = ',';
 
 	string result{};
 	result += open__;
@@ -73,9 +72,9 @@ string funs::utility::make_JSON_array_from_cursor(mongocxx::cursor &cursor)
 		result += bsoncxx::to_json(doc) += delim__;
 
 	if (result.size() not_eq 1)
-		*result.rbegin() = empty__;
-
-	result += close__;
+		*result.rbegin() = close__;
+	else
+		result += close__;
 	return result;
 }
 
