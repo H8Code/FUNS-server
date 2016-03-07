@@ -6,6 +6,7 @@
 #include <mongocxx/client.hpp>
 #include <mongocxx/instance.hpp>
 #include <utility>
+#include <mutex>
 
 #include "DBDriver.h"
 #include "MongoConfig.h"
@@ -44,6 +45,7 @@ public:
 
 
 private:
+	mutable std::mutex db_mutex;
 	mongocxx::instance inst{};
 	mongocxx::client mongo_client{mongocxx::uri
 		{}};

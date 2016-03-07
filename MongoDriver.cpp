@@ -34,7 +34,7 @@ optional_t<bsoncxx::document::value> MongoDriver::find_one(mongocxx::collection 
 std::string MongoDriver::find_one_and_get_field(mongocxx::collection &&collection, const string &id, const string &field)
 {
 	auto opts = Xcluder(list_t__{field}, 1);
-
+	
 	auto result = find_one(move(collection),
 		document
 	{}
@@ -50,27 +50,32 @@ std::string MongoDriver::get_schedules() const
 {
 	list_t__ list = {"odd", "even", "unusual", "subjects"};
 	auto opts = Xcluder(list, 0);
+	lock_guard<mutex> db_lock(db_mutex);
 	auto result = find_all(db[mongo_config::c_schedules],{}, opts);
-	return string(funs::utility::make_JSON_array_from_cursor(result));
+	return funs::utility::make_JSON_array_from_cursor(result);
 }
 
 std::string MongoDriver::get_schedule_odd_by_id(const std::string &id) const
 {
+	lock_guard<mutex> db_lock(db_mutex);
 	return find_one_and_get_field(db[mongo_config::c_schedules], id, "odd");
 }
 
 std::string MongoDriver::get_schedule_even_by_id(const std::string &id) const
 {
+	lock_guard<mutex> db_lock(db_mutex);
 	return find_one_and_get_field(db[mongo_config::c_schedules], id, "even");
 }
 
 std::string MongoDriver::get_schedule_unusual_by_id(const std::string &id) const
 {
+	lock_guard<mutex> db_lock(db_mutex);
 	return find_one_and_get_field(db[mongo_config::c_schedules], id, "unusual");
 }
 
 std::string MongoDriver::get_schedule_subjects_by_id(const std::string &id) const
 {
+	lock_guard<mutex> db_lock(db_mutex);
 	return find_one_and_get_field(db[mongo_config::c_schedules], id, "subjects");
 }
 
@@ -78,6 +83,7 @@ std::string MongoDriver::get_schedule_by_id(const std::string &id) const
 {
 	list_t__ list = {"odd", "even", "unusual", "subjects"};
 	auto opts = Xcluder(list, 0);
+	lock_guard<mutex> db_lock(db_mutex);
 	auto result = find_one(db[mongo_config::c_schedules],
 		document{}
 	<< "_id" << bsoncxx::oid(id) << finalize,
@@ -92,6 +98,7 @@ std::string MongoDriver::get_users() const
 {
 	list_t__ list = {"password_hash", "salt"};
 	auto opts = Xcluder(list, 0);
+	lock_guard<mutex> db_lock(db_mutex);
 	auto cursor = find_all(db[mongo_config::c_users],{}, opts);
 	return funs::utility::make_JSON_array_from_cursor(cursor);
 }
@@ -100,10 +107,12 @@ std::string MongoDriver::get_users_by_id(const std::string &id) const
 {
 	list_t__ list = {"password_hash", "salt"};
 	auto opts = Xcluder(list, 0);
+	lock_guard<mutex> db_lock(db_mutex);
 	auto result = find_one(db[mongo_config::c_users],
 		document{}
 	<< "_id" << id << finalize,
 		opts);
+	db_mutex.unlock();
 	if (result == bsoncxx::stdx::nullopt)
 		return "";
 	else
@@ -112,9 +121,11 @@ std::string MongoDriver::get_users_by_id(const std::string &id) const
 
 bool MongoDriver::is_token_exist(const std::string &name, const std::string &token) const
 {
+	lock_guard<mutex> db_lock(db_mutex);
 	auto result = db[mongo_config::c_users].find_one(document{}
 	<< "_id" << name << "tokens.token" << token
 		<< finalize);
+	db_mutex.unlock();
 	if (result == bsoncxx::stdx::nullopt)
 		return false;
 	else
@@ -127,7 +138,9 @@ bool MongoDriver::save_token(const std::string &name, const std::string &token)
 	filter << "_id" << name << finalize;
 	upd << "$push" << open_document << "tokens" << open_document << "token" << token << close_document << close_document;
 
+	lock_guard<mutex> db_lock(db_mutex);
 	auto ans = db[mongo_config::c_users].update_one(filter.view(), upd.view());
+	db_mutex.unlock();
 	if (ans.value().modified_count() == 1)
 		return true;
 	else
@@ -140,7 +153,9 @@ bool MongoDriver::remove_token(const std::string& name, const std::string& token
 	filter << "_id" << name << finalize;
 	upd << "$pull" << open_document << "tokens" << open_document << "token" << token << close_document << close_document;
 
+	lock_guard<mutex> db_lock(db_mutex);
 	auto ans = db[mongo_config::c_users].update_one(filter.view(), upd.view());
+	db_mutex.unlock();
 	if (ans.value().modified_count() == 1)
 		return true;
 	else
