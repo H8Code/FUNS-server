@@ -23,7 +23,7 @@ public:
 	{
 	}
 
-	bool allow(request_t request, const std::shared_ptr<restbed::Session> session, const std::string &user) const;
+	bool allow(request_t request, const std::shared_ptr<restbed::Session> &session, const std::string &user) const;
 
 	const std::string login(const std::string &user, const std::string &password);
 	const void logout(const std::string &user, const std::string &token);

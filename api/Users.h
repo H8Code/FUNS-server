@@ -7,7 +7,7 @@ class UsersImpl
 : public FunsResourceImpl {
 public:
 
-	void get_handler(const shared_ptr<Session> session) override
+	void get_handler(const shared_ptr<Session> &session) override
 	{
 		auto data = db->get_users();
 		session->close(OK, data);

@@ -8,7 +8,7 @@ using namespace funs;
 using namespace std;
 using namespace restbed;
 
-bool AuthManager::allow(request_t request, const shared_ptr<Session> session, const string &user) const
+bool AuthManager::allow(request_t request, const shared_ptr<Session> &session, const string &user) const
 {
 	bool answer = false;
 	const auto token = session->get_request()->get_header(config::token_header, "<NONE>");

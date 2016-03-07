@@ -11,13 +11,13 @@ class SchedulesImpl
 : public FunsResourceImpl {
 public:
 
-	void get_handler(const shared_ptr<Session> session) override
+	void get_handler(const shared_ptr<Session> &session) override
 	{
 		auto data = db->get_schedules();
 		session->close(OK, data);
 	}
 
-	void post_handler(const shared_ptr<Session> session) override
+	void post_handler(const shared_ptr<Session> &session) override
 	{
 		const auto request = session->get_request();
 

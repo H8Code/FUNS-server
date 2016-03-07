@@ -11,17 +11,17 @@ public:
 	FunsResourceImpl() = default;
 	virtual ~FunsResourceImpl() = default;
 
-	virtual void get_handler(const std::shared_ptr<restbed::Session> session)
+	virtual void get_handler(const std::shared_ptr<restbed::Session> &session)
 	{
 		session->close(restbed::NOT_IMPLEMENTED);
 	}
 
-	virtual void post_handler(const std::shared_ptr<restbed::Session> session)
+	virtual void post_handler(const std::shared_ptr<restbed::Session> &session)
 	{
 		session->close(restbed::NOT_IMPLEMENTED);
 	}
 
-	virtual void delete_handler(const std::shared_ptr<restbed::Session> session)
+	virtual void delete_handler(const std::shared_ptr<restbed::Session> &session)
 	{
 		session->close(restbed::NOT_IMPLEMENTED);
 	}
