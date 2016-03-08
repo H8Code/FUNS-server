@@ -6,3 +6,7 @@ funs : {
 	service_threads : 4;
 	log_file: "log";
 }
+
+mongo : {
+	uri : "127.0.0.1"
+}

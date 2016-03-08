@@ -47,8 +47,7 @@ public:
 private:
 	mutable std::mutex db_mutex;
 	mongocxx::instance inst{};
-	mongocxx::client mongo_client{mongocxx::uri
-		{}};
+	mongocxx::client mongo_client{mongocxx::uri(mongo_config::mongo_uri)};
 	mongocxx::database db{mongo_client[mongo_config::db_name]};
 
 	template<class opts_t = mongocxx::options::find,
