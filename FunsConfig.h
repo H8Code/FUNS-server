@@ -12,11 +12,19 @@ namespace funs {
 
 		class ___ConfigReader___ {
 		public:
-
+			bool defaults_only__;
 			___ConfigReader___() :
-			c__{std::make_shared<libconfig::Config>()}
+			defaults_only__{false},
+			c__{std::make_unique<libconfig::Config>()}
 			{
-				init(config_file_name);
+				try {
+					init(config_file_name);
+				} catch (...) {
+					std::cerr << "No correct funs.conf found, using default values." << std::endl;
+					defaults_only__ = true;
+					c__.reset();
+					return;
+				}
 				try {
 					std::string name = c__->lookup("name");
 					std::cout << name << " config" << std::endl;
@@ -34,12 +42,13 @@ namespace funs {
 						c__->getRoot()[block_name];
 					return block;
 				} catch (const libconfig::SettingNotFoundException &nfex) {
+					std::cout << "No " << block_name << " config block found." << std::endl;
 					throw nfex;
 				}
 			}
 
 		private:
-			std::shared_ptr<libconfig::Config> c__;
+			std::unique_ptr<libconfig::Config> c__;
 
 			void init(auto filename)
 			{
@@ -47,25 +56,32 @@ namespace funs {
 					c__->readFile(filename);
 				} catch (const libconfig::FileIOException &fioex) {
 					std::cerr << "I/O error while reading config file " << filename << std::endl;
-					exit(EXIT_FAILURE);
+					throw fioex;
 				} catch (const libconfig::ParseException &pex) {
 					std::cerr << "Parse error at "
 						<< pex.getFile() << ":" << pex.getLine()
 						<< " - " << pex.getError() << std::endl;
-					exit(EXIT_FAILURE);
+					throw pex;
 				}
 			}
 		};
 		static std::unique_ptr<___ConfigReader___> config_reader = std::make_unique<___ConfigReader___>();
+
 		auto get_param_ = [] (auto param, auto default_value)
 		{
-			auto value = default_value;
-			if (config_reader->get_block("funs").lookupValue(param, value)) {
+			if (config_reader->defaults_only__)
+				goto funs_return_default_val_;
+			try {
+				auto value = default_value;
+				if (not config_reader->get_block("funs").lookupValue(param, value))
+					std::cout << "No " << param
+					<< " found, using default " << value << std::endl;
 				return value;
-			}else {
-				std::cout << "No " << param << " found, using default " << value << std::endl;
-				return value;
+			} catch (...) {
+				goto funs_return_default_val_;
 			}
+funs_return_default_val_:
+			return default_value;
 		};
 
 		const auto port = get_param_("port", 34666);

@@ -6,13 +6,19 @@
 namespace mongo_config {
 	auto get_param_ = [] (auto param, auto default_value)
 	{
-		auto value = default_value;
-		if (funs::config::config_reader->get_block("mongo").lookupValue(param, value)) {
-			return value;
-		} else {
-			std::cout << "No " << param << " found, using default " << value << std::endl;
-			return value;
-		}
+			if (funs::config::config_reader->defaults_only__)
+				goto mongo_return_default_val_;
+			try {
+				auto value = default_value;
+				if (not funs::config::config_reader->get_block("mongo").lookupValue(param, value))
+					std::cout << "No " << param
+					<< " found, using default " << value << std::endl;
+				return value;
+			} catch (...) {
+				goto mongo_return_default_val_;
+			}
+mongo_return_default_val_:
+			return default_value;
 	};
 
 	const auto mongo_uri{get_param_("uri", "mongodb://127.0.0.1")};
