@@ -1,5 +1,5 @@
 # Building FUNS-server
-`sudo apt install libssl-dev libtool autoconf cmake libmhash-dev`
+`sudo apt install git libssl-dev libtool autoconf cmake libmhash-dev gcc g++ pkg-config`
 
 ## Building restbed
 ```bash
