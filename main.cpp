@@ -18,6 +18,7 @@ void hello()
 
 int main(const int, const char**)
 {
+	
 	try {
 		std::vector<spdlog::sink_ptr> sinks;
 		sinks.push_back(std::make_shared<spdlog::sinks::stdout_sink_st>());

@@ -1,0 +1,8 @@
+name : "Funs config example"
+
+funs : {
+	bind_address : "127.0.0.1";
+	port: 34666;
+	service_threads : 4;
+	log_file: "log";
+}
