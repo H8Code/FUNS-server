@@ -8,5 +8,5 @@ funs : {
 }
 
 mongo : {
-	uri : "127.0.0.1"
+	uri : "mongodb://127.0.0.1"
 }
