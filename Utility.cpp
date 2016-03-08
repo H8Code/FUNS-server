@@ -4,7 +4,6 @@
 #include <limits>
 #include <exception>
 #include <mhash.h>
-#include <mongocxx/v_noabi/mongocxx/cursor.hpp>
 
 constexpr auto __HASH_ID = MHASH_MD5;
 
