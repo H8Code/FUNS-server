@@ -12,6 +12,7 @@
 #include "api/SchedulesUnusual.h"
 #include "api/SchedulesSubjects.h"
 #include "api/FunsResource.h"
+#include "api/Auth.h"
 
 using namespace funs;
 using namespace restbed;
@@ -40,6 +41,7 @@ auth_manager{make_shared<AuthManager>(_db)}
 	p(resources::schedules_subjects, make_unique<SchedulesSubjectsImpl>());
 	p(resources::users, make_unique<UsersImpl>());
 	p(resources::users_id, make_unique<UsersIDImpl>());
+	p(resources::auth, make_unique<AuthImpl>());
 
 	service->set_ready_handler([](Service & s)
 	{

@@ -30,18 +30,31 @@ bool AuthManager::allow(request_t request, const shared_ptr<Session> &session, c
 			<< " Path: "
 			<< session->get_request()->get_path()
 			<< " Body: "
-			<< string{body.begin(), body.end()}
-			<< " Destination: "
-			<< session->get_destination();
+			<< string
+			{
+				body.begin(), body.end()
+			}
+		<< " Destination: "
+		<< session->get_destination();
 	}
 	return answer;
 }
 
 const string AuthManager::login(const string &user, const string & password)
 {
-	auto token = utility::random_string(config::token_lenght);
-	db->save_token(user, token);
-	return token;
+	string hash, salt;
+	if (db->get_password_hash_and_salt(user, hash, salt)) {
+		if (hash == utility::hash(salt + password)) {
+			auto token = utility::random_string(config::token_lenght);
+			db->save_token(user, token);
+			return token;
+		} else {
+			throw invalid_argument("Bad password for " + user);
+		}
+
+	} else {
+		throw invalid_argument("User " + user + " is not exist");
+	}
 }
 
 const void AuthManager::logout(const string& user, const string & token)

@@ -39,6 +39,12 @@ namespace funs {
 
 		auto field_from_JSON_bytes(const restbed::Bytes &body, const std::string &field)
 		-> std::string;
+		
+		auto inline token_to_JSON(const auto& token)
+		-> std::string
+		{
+			return R"({"token":")" + token + R"("})";
+		}
 	}
 }
 
