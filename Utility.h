@@ -45,6 +45,12 @@ namespace funs {
 		{
 			return R"({"token":")" + token + R"("})";
 		}
+		
+		auto inline quotes_remover(const auto& s)
+		-> std::string
+		{
+			return std::string(++s.begin(), --s.end());
+		};
 	}
 }
 

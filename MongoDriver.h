@@ -37,9 +37,9 @@ public:
 	bool save_token(const std::string &name, const std::string &token) override;
 	bool remove_token(const std::string& name, const std::string& token) override;
 	bool remove_tokens(const std::string& name) override;
-	bool get_password_hash_and_salt(const std::string& name, std::string& password, std::string& salt) const override;
-	bool save_password_hash_and_salt(const std::string& name, const std::string& password, const std::string& salt) override;
-	bool register_user(const std::string& name, const std::string& password, const std::string& salt, const std::string& forename, const std::string& info) override;
+	bool get_password_hash_and_salt(const std::string& name, std::string& hash, std::string& salt) const override;
+	bool save_password_hash_and_salt(const std::string& name, const std::string& hash, const std::string& salt) override;
+	bool register_user(const std::string& name, const std::string& hash, const std::string& salt, const std::string& forename, const std::string& info) override;
 
 
 

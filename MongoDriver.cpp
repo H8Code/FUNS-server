@@ -34,7 +34,7 @@ optional_t<bsoncxx::document::value> MongoDriver::find_one(mongocxx::collection 
 std::string MongoDriver::find_one_and_get_field(mongocxx::collection &&collection, const string &id, const string &field)
 {
 	auto opts = Xcluder(list_t__{field}, 1);
-	
+
 	auto result = find_one(move(collection),
 		document
 	{}
@@ -167,17 +167,44 @@ bool MongoDriver::remove_tokens(const std::string& name)
 	return false;
 }
 
-bool MongoDriver::get_password_hash_and_salt(const std::string& name, std::string& password, std::string& salt) const
+bool MongoDriver::get_password_hash_and_salt(const std::string& name, std::string& hash, std::string& salt) const
 {
-	return false;
+	auto opts = Xcluder(list_t__{"password_hash", "salt"}, 1);
+	lock_guard<mutex> db_lock(db_mutex);
+	auto result = find_one(db[mongo_config::c_users], document{}
+	<< "_id" << name << finalize,
+		opts);
+	db_mutex.unlock();
+	if (result not_eq bsoncxx::stdx::nullopt) {
+		
+		hash = funs::utility::quotes_remover(bsoncxx::to_json(
+			result.value().view()["password_hash"].get_value()));
+		salt = funs::utility::quotes_remover(bsoncxx::to_json(
+			result.value().view()["salt"].get_value()));
+		return true;
+	} else
+		return false;
 }
 
-bool MongoDriver::save_password_hash_and_salt(const std::string& name, const std::string& password, const std::string& salt)
+bool MongoDriver::save_password_hash_and_salt(const std::string& name, const std::string& hash, const std::string& salt)
 {
-	return false;
+	bsoncxx::builder::stream::document upd, filter;
+	filter << "_id" << name << finalize;
+	upd	<< "$set"
+		<< open_document << "password_hash" << hash << close_document
+		<< "$set"
+		<< open_document << "salt" << salt << close_document;
+
+	lock_guard<mutex> db_lock(db_mutex);
+	auto ans = db[mongo_config::c_users].update_one(filter.view(), upd.view());
+	db_mutex.unlock();
+	if (ans.value().modified_count() == 1)
+		return true;
+	else
+		return false;
 }
 
-bool MongoDriver::register_user(const std::string& name, const std::string& password, const std::string& salt, const std::string& forename, const std::string& info)
+bool MongoDriver::register_user(const std::string& name, const std::string& hash, const std::string& salt, const std::string& forename, const std::string& info)
 {
 	return false;
 }

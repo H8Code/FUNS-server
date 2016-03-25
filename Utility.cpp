@@ -4,6 +4,7 @@
 #include <limits>
 #include <exception>
 #include <mhash.h>
+#include "base64.h"
 
 constexpr auto __HASH_ID = MHASH_MD5;
 
@@ -25,13 +26,13 @@ const string funs::utility::hash(const string &data)
 	string ret(block_size, '-');
 	for (remove_cv < decltype(block_size)>::type i = 0; i < block_size; ++i)
 		ret[i] = hash[i];
-	return ret;
+	return base64_encode(hash, block_size);
 }
 
 const string funs::utility::random_string(const string::size_type lenght)
 {
-	constexpr uint8_t first_ASCII_symbol{0x20};
-	constexpr uint8_t last_ASCII_symbol{0x7E};
+	constexpr uint8_t first_ASCII_symbol{0x30};
+	constexpr uint8_t last_ASCII_symbol{0x7A};
 	static uniform_int_distribution<uint_fast8_t> selector(first_ASCII_symbol, last_ASCII_symbol);
 
 	static mt19937_64 generator{};
