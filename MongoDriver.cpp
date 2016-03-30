@@ -52,7 +52,7 @@ std::string MongoDriver::get_schedules() const
 	auto opts = Xcluder(list, 0);
 	lock_guard<mutex> db_lock(db_mutex);
 	auto result = find_all(db[mongo_config::c_schedules],{}, opts);
-	return funs::utility::make_JSON_array_from_cursor(result);
+	return funs::utility::make_JSON_array_from_cursor("schedules", result);
 }
 
 std::string MongoDriver::get_schedule_odd_by_id(const std::string &id) const
@@ -100,7 +100,7 @@ std::string MongoDriver::get_users() const
 	auto opts = Xcluder(list, 0);
 	lock_guard<mutex> db_lock(db_mutex);
 	auto cursor = find_all(db[mongo_config::c_users],{}, opts);
-	return funs::utility::make_JSON_array_from_cursor(cursor);
+	return funs::utility::make_JSON_array_from_cursor("users", cursor);
 }
 
 std::string MongoDriver::get_users_by_id(const std::string &id) const

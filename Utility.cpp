@@ -58,23 +58,26 @@ uintmax_t funs::utility::seed()
 	return dist(rnd);
 }
 
-string funs::utility::make_JSON_array_from_cursor(mongocxx::cursor &cursor)
+string funs::utility::make_JSON_array_from_cursor(const string &key, mongocxx::cursor &cursor)
 {
 	constexpr auto
-		open__ = '[',
-		close__ = ']',
+		open0__ = R"({")",
+		open1__ = R"(":[)";
+	constexpr auto
+		close0__ = ']',
+		close1__ = '}',
 		delim__ = ',';
 
 	string result{};
-	result += open__;
+	result += open0__; result += key; result += open1__;
 
 	for (auto &&doc : cursor)
 		result += bsoncxx::to_json(doc) += delim__;
 
-	if (result.size() not_eq 1)
-		*result.rbegin() = close__;
-	else
-		result += close__;
+	if (result.size() not_eq 1) {
+		*result.rbegin() = close0__; result += close1__;
+	} else
+		result += string({close0__, close1__});
 	return result;
 }
 

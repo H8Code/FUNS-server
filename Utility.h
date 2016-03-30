@@ -34,13 +34,13 @@ namespace funs {
 		auto seed()
 		-> uintmax_t;
 
-		auto make_JSON_array_from_cursor(mongocxx::cursor &cursor)
+		auto make_JSON_array_from_cursor(const std::string &key, mongocxx::cursor &cursor)
 		-> std::string;
 
 		auto field_from_JSON_bytes(const restbed::Bytes &body, const std::string &field)
 		-> std::string;
 		
-		auto inline token_to_JSON(const auto& token)
+		auto inline token_to_JSON(const auto &token)
 		-> std::string
 		{
 			return R"({"token":")" + token + R"("})";
