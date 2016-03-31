@@ -70,11 +70,12 @@ string funs::utility::make_JSON_array_from_cursor(const string &key, mongocxx::c
 
 	string result{};
 	result += open0__; result += key; result += open1__;
-
+	const auto empty_array_string_size = result.size();
+	
 	for (auto &&doc : cursor)
 		result += bsoncxx::to_json(doc) += delim__;
 
-	if (result.size() not_eq 1) {
+	if (result.size() not_eq empty_array_string_size) {
 		*result.rbegin() = close0__; result += close1__;
 	} else
 		result += string({close0__, close1__});
